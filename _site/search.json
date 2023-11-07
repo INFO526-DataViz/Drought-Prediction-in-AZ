@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "proposal.html",
+    "href": "proposal.html",
+    "title": "Proposal title",
+    "section": "",
+    "text": "Installed Packages\n### GETTING THE LIBRARIES\nif (!require(pacman))\n  install.packages(pacman)\n\npacman::p_load(tidyverse,\n               formattable,\n               dlookr,\n               readxl,\n               writexl)"
+  },
+  {
+    "objectID": "proposal.html#introduction",
+    "href": "proposal.html#introduction",
+    "title": "Proposal title",
+    "section": "Introduction",
+    "text": "Introduction\nArizona has always maintained their delicate balance between water supply and demand. But, over the past two decades this equilibrium has been increasingly disrupted by a persistent and concerning phenomenon: drought. Arizona has faced a series of drought conditions that have posed significant challenges to its environment, economy, and overall sustainability. It’s evolving drought conditions, not only impact the state’s immediate well-being but also have far-reaching implications for its future.\n\nOur desire to explore and interpret the data on Arizona’s drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state’s residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona’s drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state."
+  },
+  {
+    "objectID": "proposal.html#about-the-dataset",
+    "href": "proposal.html#about-the-dataset",
+    "title": "Proposal title",
+    "section": "About the Dataset",
+    "text": "About the Dataset\n\n#Importing the dataset using read_excel\ndata &lt;- read_excel(\"drought_data.xlsx\")\n\nThe Arizona Drought Conditions Dataset is a comprehensive collection of data that provides crucial insights into short-term and long-term drought conditions in various counties within the state of Arizona. from the year 2000 to the present. This dataset is used to monitor and report drought conditions, serving as a valuable resource for researchers, policymakers, and the general public. The data is sourced from the Arizona Drought Monitoring Technical Committee, which convenes weekly to advise the U.S. Drought Monitor authors on the current drought conditions in Arizona. This information influences the official record of drought for Federal drought relief claims.\n\nThis dataset allows users to explore drought conditions for the entire state of Arizona or for specific counties, and it covers a time span of over two decades. It is updated on a monthly basis, providing a valuable resource for monitoring and understanding drought patterns in the region.\n\n#Properties of the dataset \ndata |&gt;\n  diagnose() |&gt;\n  formattable()\n\n\n\n\n\n\nvariables\n\n\ntypes\n\n\nmissing_count\n\n\nmissing_percent\n\n\nunique_count\n\n\nunique_rate\n\n\n\n\n\n\nDate\n\n\nPOSIXct\n\n\n0\n\n\n0\n\n\n1189\n\n\n6.666667e-02\n\n\n\n\nCounty\n\n\ncharacter\n\n\n0\n\n\n0\n\n\n17\n\n\n9.531819e-04\n\n\n\n\nState\n\n\ncharacter\n\n\n0\n\n\n0\n\n\n1\n\n\n5.606953e-05\n\n\n\n\nNone\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n1319\n\n\n7.395571e-02\n\n\n\n\nD0\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n2688\n\n\n1.507149e-01\n\n\n\n\nD1\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n3036\n\n\n1.702271e-01\n\n\n\n\nD2\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n2590\n\n\n1.452201e-01\n\n\n\n\nD3\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n1463\n\n\n8.202972e-02\n\n\n\n\nD4\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n429\n\n\n2.405383e-02\n\n\n\n\n\n\n\n\nDescription of the Dataset\nDate: This column represents the date for which the drought conditions are recorded. It is in the format “MM-DD-YYYY” and serves as the temporal dimension for the dataset.\nCounty: This column specifies the name of the county within Arizona for which the drought conditions are being reported. Each row represents a different county.\nState: This column specifies the state, which is “AZ” for Arizona. It is a constant value for all rows, indicating the state where the data is collected.\n\nDrought Level Definitions None - No dry or drought conditions.\nD0 - Abnormally dry conditions are characterized by short-term dryness that may slow planting, growth of crops or pastures.\nD1 - Moderate drought conditions may cause the development of water shortages and fire activity to increase.\nD2 - Severe drought conditions may lead to large surface water levels dropping and crop/pasture losses.\nD3 - Extreme drought conditions may lead to widespread water shortages and major crop/pasture losses.\nD4 - Exceptional drought conditions are characterized by shortages of water in reservoirs, streams, and wells as well as high wildfire counts and exceptional and widespread crop/pasture losses."
+  },
+  {
+    "objectID": "proposal.html#questions",
+    "href": "proposal.html#questions",
+    "title": "Proposal title",
+    "section": "Questions",
+    "text": "Questions\nThe two questions you want to answer."
+  },
+  {
+    "objectID": "proposal.html#analysis-plan",
+    "href": "proposal.html#analysis-plan",
+    "title": "Proposal title",
+    "section": "Analysis plan",
+    "text": "Analysis plan\n\nA plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any)."
+  },
+  {
+    "objectID": "presentation.html",
+    "href": "presentation.html",
+    "title": "Project title",
+    "section": "",
+    "text": "The presentation is created using the Quarto CLI\n## sets the start of a new slide\n\n\n\n\nYou can use plain text\n\n\n\nor bullet points1\n\n\nor in two columns\n\n\n\nlike\nthis\n\n\n\n\n\n\n# A tibble: 2 × 5\n  term        estimate std.error statistic       p.value\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;\n1 (Intercept)   25.3      3.08        8.22 0.00000000358\n2 speed         -0.116    0.0642     -1.81 0.0806       \n\n\n# A tibble: 1 × 12\n  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC\n      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1    0.0983        0.0682  5.82      3.27  0.0806     1  -101.  207.  212.\n# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;\n\n\n\n\n\n\n\nWarning: Removed 2 rows containing missing values (`geom_point()`).\n\n\n\n\n\n\n\n\n\n\n\nSome text\ngoes here"
+  },
+  {
+    "objectID": "presentation.html#quarto",
+    "href": "presentation.html#quarto",
+    "title": "Project title",
+    "section": "",
+    "text": "The presentation is created using the Quarto CLI\n## sets the start of a new slide"
+  },
+  {
+    "objectID": "presentation.html#layouts",
+    "href": "presentation.html#layouts",
+    "title": "Project title",
+    "section": "",
+    "text": "You can use plain text\n\n\n\nor bullet points1\n\n\nor in two columns\n\n\n\nlike\nthis"
+  },
+  {
+    "objectID": "presentation.html#code",
+    "href": "presentation.html#code",
+    "title": "Project title",
+    "section": "",
+    "text": "# A tibble: 2 × 5\n  term        estimate std.error statistic       p.value\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;\n1 (Intercept)   25.3      3.08        8.22 0.00000000358\n2 speed         -0.116    0.0642     -1.81 0.0806       \n\n\n# A tibble: 1 × 12\n  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC\n      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1    0.0983        0.0682  5.82      3.27  0.0806     1  -101.  207.  212.\n# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;"
+  },
+  {
+    "objectID": "presentation.html#plots",
+    "href": "presentation.html#plots",
+    "title": "Project title",
+    "section": "",
+    "text": "Warning: Removed 2 rows containing missing values (`geom_point()`)."
+  },
+  {
+    "objectID": "presentation.html#plot-and-text",
+    "href": "presentation.html#plot-and-text",
+    "title": "Project title",
+    "section": "",
+    "text": "Some text\ngoes here"
+  },
+  {
+    "objectID": "presentation.html#tables",
+    "href": "presentation.html#tables",
+    "title": "Project title",
+    "section": "Tables",
+    "text": "Tables\nIf you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,\n\n\n\n\n\nspecies\nisland\nbill_length_mm\nbill_depth_mm\nflipper_length_mm\nbody_mass_g\nsex\n\n\n\n\nAdelie\nTorgersen\n39.1\n18.7\n181\n3750\nmale\n\n\nAdelie\nTorgersen\n39.5\n17.4\n186\n3800\nfemale\n\n\nAdelie\nTorgersen\n40.3\n18.0\n195\n3250\nfemale\n\n\nAdelie\nTorgersen\nNA\nNA\nNA\nNA\nNA\n\n\nAdelie\nTorgersen\n36.7\n19.3\n193\n3450\nfemale\n\n\nAdelie\nTorgersen\n39.3\n20.6\n190\n3650\nmale"
+  },
+  {
+    "objectID": "presentation.html#images",
+    "href": "presentation.html#images",
+    "title": "Project title",
+    "section": "Images",
+    "text": "Images\n\n\n\nImage credit: Danielle Navarro, Percolate."
+  },
+  {
+    "objectID": "presentation.html#math-expressions",
+    "href": "presentation.html#math-expressions",
+    "title": "Project title",
+    "section": "Math Expressions",
+    "text": "Math Expressions\nYou can write LaTeX math expressions inside a pair of dollar signs, e.g. $\\alpha+\\beta$ renders \\(\\alpha + \\beta\\). You can use the display style with double dollar signs:\n$$\\bar{X}=\\frac{1}{n}\\sum_{i=1}^nX_i$$\n\\[\n\\bar{X}=\\frac{1}{n}\\sum_{i=1}^nX_i\n\\]\nLimitations:\n\nThe source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting $$ must appear in the very beginning of a line, followed immediately by a non-space character, and the ending $$ must be at the end of a line, led by a non-space character;\nThere should not be spaces after the opening $ or before the closing $."
+  },
+  {
+    "objectID": "presentation.html#feeling-adventurous",
+    "href": "presentation.html#feeling-adventurous",
+    "title": "Project title",
+    "section": "Feeling adventurous?",
+    "text": "Feeling adventurous?\n\nYou are welcomed to use the default styling of the slides. In fact, that’s what I expect majority of you will do. You will differentiate yourself with the content of your presentation.\nBut some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs."
+  },
+  {
+    "objectID": "presentation.html#footnotes",
+    "href": "presentation.html#footnotes",
+    "title": "Project title",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nAnd add footnotes↩︎"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This project was developed by [Team Name] For INFO 526 - Data Analysis & Visualization at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\nTeam member 1: One sentence description of Team member 1 (e.g., year, major, etc.).\nTeam member 2: One sentence description of Team member 2 (e.g., year, major, etc.).\nTeam member 3: One sentence description of Team member 3 (e.g., year, major, etc.).\nTeam member 4: One sentence description of Team member 4 (e.g., year, major, etc.)."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Project title",
+    "section": "",
+    "text": "Add project abstract here."
+  },
+  {
+    "objectID": "index.html#abstract",
+    "href": "index.html#abstract",
+    "title": "Project title",
+    "section": "",
+    "text": "Add project abstract here."
+  },
+  {
+    "objectID": "proposal.html#the-dataset",
+    "href": "proposal.html#the-dataset",
+    "title": "Proposal title",
+    "section": "The Dataset",
+    "text": "The Dataset\n\n#Importing the dataset using read_excel\ndata &lt;- read_excel(\"drought_data.xlsx\")\n\nThe Arizona Drought Conditions Dataset is a comprehensive collection of data that provides crucial insights into short-term and long-term drought conditions in various counties within the state of Arizona. from the year 2000 to the present. This dataset is used to monitor and report drought conditions, serving as a valuable resource for researchers, policymakers, and the general public. The data is sourced from the Arizona Drought Monitoring Technical Committee, which convenes weekly to advise the U.S. Drought Monitor authors on the current drought conditions in Arizona. This information influences the official record of drought for Federal drought relief claims.\n\nThis dataset allows users to explore drought conditions for the entire state of Arizona or for specific counties, and it covers a time span of over two decades. It is updated on a monthly basis, providing a valuable resource for monitoring and understanding drought patterns in the region.\n\n#Properties of the dataset \ndata |&gt;\n  diagnose() |&gt;\n  formattable()\n\n\n\n\n\n\nvariables\n\n\ntypes\n\n\nmissing_count\n\n\nmissing_percent\n\n\nunique_count\n\n\nunique_rate\n\n\n\n\n\n\nDate\n\n\nPOSIXct\n\n\n0\n\n\n0\n\n\n1189\n\n\n6.666667e-02\n\n\n\n\nCounty\n\n\ncharacter\n\n\n0\n\n\n0\n\n\n17\n\n\n9.531819e-04\n\n\n\n\nState\n\n\ncharacter\n\n\n0\n\n\n0\n\n\n1\n\n\n5.606953e-05\n\n\n\n\nNone\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n1319\n\n\n7.395571e-02\n\n\n\n\nD0\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n2688\n\n\n1.507149e-01\n\n\n\n\nD1\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n3036\n\n\n1.702271e-01\n\n\n\n\nD2\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n2590\n\n\n1.452201e-01\n\n\n\n\nD3\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n1463\n\n\n8.202972e-02\n\n\n\n\nD4\n\n\nnumeric\n\n\n0\n\n\n0\n\n\n429\n\n\n2.405383e-02\n\n\n\n\n\n\n\n\nDescription of the Dataset\nDate: This column represents the date for which the drought conditions are recorded. It is in the format “MM-DD-YYYY” and serves as the temporal dimension for the dataset.\nCounty: This column specifies the name of the county within Arizona for which the drought conditions are being reported. Each row represents a different county.\nState: This column specifies the state, which is “AZ” for Arizona. It is a constant value for all rows, indicating the state where the data is collected.\n\nDrought Level Definitions None - No dry or drought conditions.\nD0 - Abnormally dry conditions are characterized by short-term dryness that may slow planting, growth of crops or pastures.\nD1 - Moderate drought conditions may cause the development of water shortages and fire activity to increase.\nD2 - Severe drought conditions may lead to large surface water levels dropping and crop/pasture losses.\nD3 - Extreme drought conditions may lead to widespread water shortages and major crop/pasture losses.\nD4 - Exceptional drought conditions are characterized by shortages of water in reservoirs, streams, and wells as well as high wildfire counts and exceptional and widespread crop/pasture losses."
+  }
+]

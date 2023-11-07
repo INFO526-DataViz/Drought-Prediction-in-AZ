@@ -32,7 +32,7 @@ Arizona has always maintained their delicate balance between water supply and de
 \
 Our desire to explore and interpret the data on Arizona's drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state's residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona's drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state.
 
-## About the Dataset
+## The Dataset
 
 ```{r}
 #| label: load-dataset

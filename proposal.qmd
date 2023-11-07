@@ -77,10 +77,60 @@ D3 - Extreme drought conditions may lead to widespread water shortages and major
 
 D4 - Exceptional drought conditions are characterized by shortages of water in reservoirs, streams, and wells as well as high wildfire counts and exceptional and widespread crop/pasture losses.
 
-## Questions
+## Goal:
 
-The two questions you want to answer.
+The goal of our project is to develop an interactive dashboard that enables us to explore and understand drought data in Arizona. The various components of the dashboard include:
 
-## Analysis plan
+**1. Geographic Visualization:**
 
--   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+-   Shows a map of Arizona that displays the counties present in Arizona. When we want to visualize a particular county, we can do so by clicking that county on the map. This filters that county's data for the entire dashboard.
+
+**2. Time Series Analysis:**
+
+-   A time series plot shows the evolution of drought levels (D0, D1, D2, D3, D4, None) over time. Each of these drought levels are stacked above each other for easier comparison.
+-   This also allows users to filter data by county, severity level, or a combination of these factors.
+
+**3. Statistical Insights:**
+
+-   We plan on making a stacked bar plot, showing the average drought levels of each category through the years and a pie chart showing the spread of drought levels.
+-   This will provide summary statistics and trends in drought severity for different counties and time periods.
+
+**4. Interactivity:**
+
+-   We will incorporate user-friendly interactive features, such as dropdown menus, sliders, and checkboxes, for selecting and filtering data.
+-   We will also implement tooltips and hover effects on the map for detailed information when the user interacts with data points.
+
+## Implementation Plan:
+
+Weekly plan of attack for our project implementation:
+
+**1. Data Collection and Preparation:**
+
+-   Obtain the drought dataset for Arizona, which includes county, time, and drought severity levels (D0, D1, D2, D3, D4, None) and another dataset for plotting the map of Arizona.
+-   Clean and preprocess the data to ensure consistency, handle missing values, and format it for visualization.
+
+**2. Choose Tools and Libraries:**
+
+-   Select R programming and relevant libraries for creating interactive visualizations, such as Shiny for building the web application, Leaflet for mapping, and ggplot2 for time series plots.
+
+**3. Design the User Interface (UI):**
+
+-   Plan the layout and design of the dashboard. Consider a user-friendly and responsive design that allows users to easily navigate and interact with the data.
+
+**4. Geographic Visualization:**
+
+-   Use Leaflet to create a map that represents the different counties in Arizona to let the users choose from them.
+
+**5. Time Series Analysis:**
+
+-   Use ggplot2 to generate time series plots for drought severity over time.
+-   Add interactive features to allow users to filter and explore data based on counties, severity levels, or date ranges.
+
+**6. Statistical Insights:**
+
+-   Make the pie chart and stacked barplot using ggplot2, and compute summary statistics, trends, and forecasts based on the dataset.
+-   Present these insights in a user-friendly and easily understandable format.
+
+**7. Integrate with Shiny:**
+
+-   Create a Shiny web application that combines the geographic map, time series plots, pie chart, stacked bar chart and statistical insights.

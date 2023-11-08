@@ -30,7 +30,7 @@ pacman::p_load(tidyverse,
 
 ## **Did You Know?**
 
-Did you know that Arizona has been in a drought for 27 years? That's nearly three decades of parched lands and dwindling water supplies, putting our beloved state's way of life at risk. Almost half of our water comes from the Colorado River, which also sustains farms, wildlife, and neighboring states.\
+Did you know that Arizona has been in a drought for 27 years? with the land thirsting for water and our water supplies running low this isn't the first time. Twice before, in the 1900s and 1950s, we faced similar tough times. The drought we're in now started in the late 1990s and hasn't stopped.
 
 ## Introduction
 

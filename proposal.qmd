@@ -1,13 +1,15 @@
 ---
-title: "Proposal title"
+title: "Interactive Analysis of Arizona's Drought"
 subtitle: "Proposal"
+author: 
+  - name: " Graph Gurus - Akranth, Hari, Nikitha, Swetha"
 format: html
 editor: visual
 ---
 
 ### Packages Setup
 
-```{r}
+```{r load packages, message=FALSE, output=FALSE}
 #| label: load-pkgs
 #| message: false
 #| warning: false
@@ -26,11 +28,17 @@ pacman::p_load(tidyverse,
                writexl)
 ```
 
+## **Did You Know?**
+
+Did you know that Arizona has been in a drought for 27 years? That's nearly three decades of parched lands and dwindling water supplies, putting our beloved state's way of life at risk. Almost half of our water comes from the Colorado River, which also sustains farms, wildlife, and neighboring states.\
+
 ## Introduction
 
-Arizona has always maintained their delicate balance between water supply and demand. But, over the past two decades this equilibrium has been increasingly disrupted by a persistent and concerning phenomenon: drought. Arizona has faced a series of drought conditions that have posed significant challenges to its environment, economy, and overall sustainability. It's evolving drought conditions, not only impact the state's immediate well-being but also have far-reaching implications for its future.\
+This enduring drought in Arizona presents more than a climatic challenge; it disrupts the balance of life, affecting everything from our environment to the economy. It's evolving drought conditions, not only impact the state's immediate well-being but also have far-reaching implications for its future.
+
+Our desire to explore and interpret the data on Arizona's drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state's residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona's drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state. \
 \
-Our desire to explore and interpret the data on Arizona's drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state's residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona's drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state.
+Our aim is to create easy-to-understand visuals that show what's happening and get people thinking about solutions. We'll look closely at how different areas are dealing with water shortages to figure out where to focus our efforts to help.\
 
 ## The Dataset
 
@@ -59,27 +67,33 @@ data |>
 
 ### Description of the Dataset
 
-Date: This column represents the date for which the drought conditions are recorded. It is in the format "MM-DD-YYYY" and serves as the temporal dimension for the dataset.
+The data-set contains 17,386 rows and 9 columns, showing Arizona's drought numbers by county since 2000 to present:
 
-County: This column specifies the name of the county within Arizona for which the drought conditions are being reported. Each row represents a different county.
+-   Date : This column represents the date for which the drought conditions are recorded. It is in the format "MM-DD-YYYY" and serves as the temporal dimension for the dataset.
 
-State: This column specifies the state, which is "AZ" for Arizona. It is a constant value for all rows, indicating the state where the data is collected.\
-\
-**Drought Level Definitions** None - No dry or drought conditions.
+-   County : This column specifies the name of the county within Arizona for which the drought conditions are being reported. Each row represents a different county.
 
-D0 - Abnormally dry conditions are characterized by short-term dryness that may slow planting, growth of crops or pastures.
+-   State : This column specifies the state, which is "AZ" for Arizona. It is a constant value for all rows, indicating the state where the data is collected.\
+    \
+    **Drought Level Definitions**
 
-D1 - Moderate drought conditions may cause the development of water shortages and fire activity to increase.
+-   None - No dry or drought conditions.
 
-D2 - Severe drought conditions may lead to large surface water levels dropping and crop/pasture losses.
+-   D0  - Abnormally dry conditions are characterized by short-term dryness that may slow planting, growth of crops or pastures.
 
-D3 - Extreme drought conditions may lead to widespread water shortages and major crop/pasture losses.
+-   D1 - Moderate drought conditions may cause the development of water shortages and fire activity to increase.
 
-D4 - Exceptional drought conditions are characterized by shortages of water in reservoirs, streams, and wells as well as high wildfire counts and exceptional and widespread crop/pasture losses.
+-   D2 - Severe drought conditions may lead to large surface water levels dropping and crop/pasture losses.
+
+-   D3 - Extreme drought conditions may lead to widespread water shortages and major crop/pasture losses.
+
+-   D4 - Exceptional drought conditions are characterized by shortages of water in reservoirs, streams, and wells as well as high wildfire counts and exceptional and widespread crop/pasture losses.
 
 ## Goal:
 
-The goal of our project is to develop an interactive dashboard that enables us to explore and understand drought data in Arizona. The various components of the dashboard include:
+The goal of our project is to develop an Interactive Drought Dashboard that presents a detailed view of Arizona's drought conditions from 2000 to the present. This interactive tool allows users to examine drought trends over time and analyze the data for specific time frames or particular counties, providing a dynamic and user-focused experience.
+
+The various components of the dashboard include:
 
 **1. Geographic Visualization:**
 
@@ -134,3 +148,32 @@ Weekly plan of attack for our project implementation:
 **7. Integrate with Shiny:**
 
 -   Create a Shiny web application that combines the geographic map, time series plots, pie chart, stacked bar chart and statistical insights.
+
+## Plan of Attack
+
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+| Week            | Weekly Tasks                                                                                                                         | Person in charge        |
++=================+======================================================================================================================================+=========================+
+| Week 5          | Work on the Peer review feedback and submit final proposal                                                                           | Everyone                |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+| Week 6          | Data Exploration, Data Cleaning, Data preprocesing                                                                                   | Everyone                |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+|                 | Assign induvidial tasks                                                                                                              |                         |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+| Week 7          | Understanding the basics and start generating plots                                                                                  | Everyone                |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+|                 | create three graphs:\                                                                                                                | TBD                     |
+|                 | 1. donut-shaped graph that shows the average percentage of each drought level from 2000 to present.                                  |                         |
+|                 |                                                                                                                                      |                         |
+|                 | 2\. The bar chart that shows the average percentage of each drought level by year from 2000 to present.                              |                         |
+|                 |                                                                                                                                      |                         |
+|                 | 3\. The time-series that shows weekly drought levels in square miles for the state.                                                  |                         |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+| Week 8          | Work on implementing the sliding bar by which a specific time frame can be chosen and the other three graphs will adjust accordingly | TBD                     |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+| Week 9          | Create an interactive dashboard                                                                                                      | TBD                     |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+|                 | start working on the report                                                                                                          | TBD                     |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+
+| Week 10         | final peer review and presentations                                                                                                  | Everone                 |
++-----------------+--------------------------------------------------------------------------------------------------------------------------------------+-------------------------+

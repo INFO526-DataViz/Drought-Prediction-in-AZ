@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: Project Title
+  title: Interactive analysis of arizona's drought
   navbar:
     right:
       - icon: github

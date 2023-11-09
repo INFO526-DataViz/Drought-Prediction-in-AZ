@@ -3,8 +3,18 @@ title: "Interactive Analysis of Arizona's Drought"
 subtitle: "Proposal"
 author: 
   - name: " Graph Gurus - Akranth, Hari, Nikitha, Swetha"
-format: html
+format:
+  html:
+    code-tools: true
+    code-overflow: wrap
+    code-line-numbers: true
+    embed-resources: true
 editor: visual
+code-annotations: hover
+categories: 
+  - Data visualization
+execute:
+  warning: false
 ---
 
 ### Packages Setup
@@ -28,7 +38,7 @@ pacman::p_load(tidyverse,
                writexl)
 ```
 
-## **Did You Know?**
+## Did You Know?
 
 Did you know that Arizona has been in a drought for 27 years? with the land thirsting for water and our water supplies running low this isn't the first time. Twice before, in the 1900s and 1950s, we faced similar tough times. The drought we're in now started in the late 1990s and hasn't stopped.
 
@@ -36,15 +46,15 @@ Did you know that Arizona has been in a drought for 27 years? with the land thir
 
 This enduring drought in Arizona presents more than a climatic challenge; it disrupts the balance of life, affecting everything from our environment to the economy. It's evolving drought conditions, not only impact the state's immediate well-being but also have far-reaching implications for its future.
 
-Our desire to explore and interpret the data on Arizona's drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state's residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona's drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state. \
-\
-Our aim is to create easy-to-understand visuals that show what's happening and get people thinking about solutions. We'll look closely at how different areas are dealing with water shortages to figure out where to focus our efforts to help.\
+Our desire to explore and interpret the data on Arizona's drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state's residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona's drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state. Our aim is to create easy-to-understand visuals that show what's happening and get people thinking about solutions. We'll look closely at how different areas are dealing with water shortages to figure out where to focus our efforts to help.
+
+## Why this dataset
+
+We chose the Arizona's Drought Conditions dataset sourced from the Arizona Drought Monitoring Technical Committee, because it offers real-time, up-to-date information right up to the present. This allows us to analyze ongoing drought patterns and make immediate, informed decisions for water conservation and resource management in Arizona.
 
 ## The Dataset
 
-```{r}
-#| label: load-dataset
-#| message: false
+```{r dataset, message=FALSE}
 
 #Importing the dataset using read_excel
 data <- read_excel("drought_data.xlsx")
@@ -56,8 +66,6 @@ The Arizona Drought Conditions Dataset is a comprehensive collection of data tha
 This dataset allows users to explore drought conditions for the entire state of Arizona or for specific counties, and it covers a time span of over two decades. It is updated on a monthly basis, providing a valuable resource for monitoring and understanding drought patterns in the region.
 
 ```{r}
-#| label: dataset-description
-#| message: false
 
 #Properties of the dataset 
 data |>
@@ -79,7 +87,7 @@ The data-set contains 17,386 rows and 9 columns, showing Arizona's drought numbe
 
 -   None - No dry or drought conditions.
 
--   D0  - Abnormally dry conditions are characterized by short-term dryness that may slow planting, growth of crops or pastures.
+-   D0 - Abnormally dry conditions are characterized by short-term dryness that may slow planting, growth of crops or pastures.
 
 -   D1 - Moderate drought conditions may cause the development of water shortages and fire activity to increase.
 
@@ -89,34 +97,50 @@ The data-set contains 17,386 rows and 9 columns, showing Arizona's drought numbe
 
 -   D4 - Exceptional drought conditions are characterized by shortages of water in reservoirs, streams, and wells as well as high wildfire counts and exceptional and widespread crop/pasture losses.
 
-## Goal:
+## Research Question
+
+How have drought conditions evolved across different counties in Arizona from 2000 to the present, and what are the implications for water resource management and policy-making?
+
+## Goal
 
 The goal of our project is to develop an Interactive Drought Dashboard that presents a detailed view of Arizona's drought conditions from 2000 to the present. This interactive tool allows users to examine drought trends over time and analyze the data for specific time frames or particular counties, providing a dynamic and user-focused experience.
 
-The various components of the dashboard include:
+## Analysis
 
-**1. Geographic Visualization:**
+We plan to build an interactive dashboard with several key components, designed to offer both a broad overview and detailed examination of drought trends across the state's counties. Here's how we will approach the analysis:
+
+1.  **Geographic Visualization :**
 
 -   Shows a map of Arizona that displays the counties present in Arizona. When we want to visualize a particular county, we can do so by clicking that county on the map. This filters that county's data for the entire dashboard.
 
-**2. Time Series Analysis:**
+2.  **Time Series Analysis :**
 
 -   A time series plot shows the evolution of drought levels (D0, D1, D2, D3, D4, None) over time. Each of these drought levels are stacked above each other for easier comparison.
 -   This also allows users to filter data by county, severity level, or a combination of these factors.
 
-**3. Statistical Insights:**
+3.   **Statistical Insights:**
 
 -   We plan on making a stacked bar plot, showing the average drought levels of each category through the years and a pie chart showing the spread of drought levels.
 -   This will provide summary statistics and trends in drought severity for different counties and time periods.
 
-**4. Interactivity:**
+4.  **Interactivity:**
 
 -   We will incorporate user-friendly interactive features, such as dropdown menus, sliders, and checkboxes, for selecting and filtering data.
--   We will also implement tooltips and hover effects on the map for detailed information when the user interacts with data points.
+-   We will also implement tool tips and hover effects on the map for detailed information when the user interacts with data points.
+
+### Risk assessment analysis
+
+5.  **Choropleth Maps**:
+
+-   These maps are represent various levels of drought severity with different colors across the geographical layout of Arizona. They provide a quick and clear way to see which counties are most at risk and how the severity of drought conditions varies across the state.
+
+6.  **Stacked Area Charts**:
+
+-   They show the cumulative impact of different drought severity levels over time. It can illustrate how much of the state is affected by each category of drought and how these proportions change from year to year.
 
 ## Implementation Plan:
 
-Weekly plan of attack for our project implementation:
+Our high level implementation plan includes:
 
 **1. Data Collection and Preparation:**
 
@@ -149,33 +173,51 @@ Weekly plan of attack for our project implementation:
 
 -   Create a Shiny web application that combines the geographic map, time series plots, pie chart, stacked bar chart and statistical insights.
 
-## Plan of Attack
+## Weekly plan of action
 
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-| Week            | Weekly Tasks                                                                                            | Person in charge        |
-+=================+=========================================================================================================+=========================+
-| Week 5          | Work on the Peer review feedback and submit final proposal                                              | Everyone                |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-| Week 6          | Understanding the basics , exploring shiny app                                                          | Everyone                |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-|                 | Assign induvidial tasks                                                                                 |                         |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-| Week 7          | Data Exploration, Data Cleaning, Data preprocesing                                                      | Everyone                |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-|                 | create plots:\                                                                                          | TBD                     |
-|                 | 1. pie chart that shows the average percentage of each drought level from 2000 to present.              |                         |
-|                 |                                                                                                         |                         |
-|                 | 2\. The bar chart that shows the average percentage of each drought level by year from 2000 to present. |                         |
-|                 |                                                                                                         |                         |
-|                 | 3\. The time-series that shows weekly drought levels in square miles for the state.                     |                         |
-|                 |                                                                                                         |                         |
-|                 | 4\. Geographical map                                                                                    |                         |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-| Week 8          | Explore shiny and ways to integrate our visualizations and shiny                                        |                         |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-| Week 9          | start creating an interactive dashboard                                                                 | TBD                     |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-|                 | start working on the report                                                                             | TBD                     |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
-| Week 10         | final peer review and presentations                                                                     | Everone                 |
-+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------+
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+| Week      | Weekly Tasks                                                                                            | Person in charge |
++===========+=========================================================================================================+==================+
+| Week 5    | Work on the Peer review feedback and submit final proposal                                              | Everyone         |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+| Week 6    | Understanding the basics , exploring shiny app                                                          | Everyone         |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+|           | Assign induvidial tasks                                                                                 |                  |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+| Week 7    | Data Exploration, Data Cleaning, Data preprocesing                                                      | Everyone         |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+|           | create plots:\                                                                                          | TBD              |
+|           | 1. pie chart that shows the average percentage of each drought level from 2000 to present.              |                  |
+|           |                                                                                                         |                  |
+|           | 2\. The bar chart that shows the average percentage of each drought level by year from 2000 to present. |                  |
+|           |                                                                                                         |                  |
+|           | 3\. The time-series that shows weekly drought levels in square miles for the state.                     |                  |
+|           |                                                                                                         |                  |
+|           | 4\. Geographical map                                                                                    |                  |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+| Week 8    | Explore shiny and ways to integrate our visualizations and shiny                                        |                  |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+| Week 9    | start creating an interactive dashboard                                                                 | TBD              |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+|           | start working on the report                                                                             | TBD              |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+| Week 10   | final peer review and presentations                                                                     | Everone          |
++-----------+---------------------------------------------------------------------------------------------------------+------------------+
+
+## Repo Organization
+
+The following are the folders involved in the Project repository.
+
+-   **\'data/\':** Used for storing our input data file.
+
+-   **\'images/\':** Used for storing image files used in the project.
+
+-   **\'presentation_files/\':** Folder for having presentation related files.
+
+-   **\'\_extra/\':** Used to brainstorm our analysis which won\'t impact our project workflow.
+
+-   **\'\_freeze/\':** This folder is used to store the generated files during the build process. These files represent the frozen state of the website at a specific point in time.
+
+-   **\'\_site/\':** Folder used to store the generated static website files after the site generator processes the quarto document.
+
+-   **\'.github/\':** Folder for storing github templates and workflow.

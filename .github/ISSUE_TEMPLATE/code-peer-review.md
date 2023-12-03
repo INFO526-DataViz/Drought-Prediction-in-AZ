@@ -1,6 +1,6 @@
 ---
 name: Code peer review
-about: Peer review of project dode
+about: Peer review of project code
 title: Code peer review
 labels: ''
 assignees: ''

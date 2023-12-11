@@ -6,10 +6,10 @@ editor: visual
 
 This project was developed by **\[Team Name\]** For [INFO 526 - Data Analysis & Visualization](https://datavizaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
 
--   Team member 1: One sentence description of Team member 1 (e.g., year, major, etc.).
+-   Team member 1: Akrant Varshney, is a 1st year graduate student in the Data Science program with the School of Infoormation.
 
--   Team member 2: One sentence description of Team member 2 (e.g., year, major, etc.).
+-   Team member 2: Hariharan Ramesh, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
+-   Team member 3: Nikitha Maria, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Team member 4: Swetha Siripurapu, is a 1st year graduate student in the Data Science program with the School of Information.

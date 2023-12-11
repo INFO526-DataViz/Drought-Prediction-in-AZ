@@ -48,16 +48,6 @@ This enduring drought in Arizona presents more than a climatic challenge; it dis
 
 Our desire to explore and interpret the data on Arizona's drought conditions is a combination of curiosity and the recognition that water scarcity is an issue that resonates deeply with the state's residents. By delving into this database, will allow us to gain valuable insights into the dynamic nature of Arizona's drought experiences. Additionally, during our recent interactions with a group of individuals actively raising awareness about the dire drought situation in Arizona and the adverse effects of water wastage, we were inspired to investigate this interesting topic. This exploration would not only provide us with valuable data for our visualization but also offer a profound understanding of the challenges faced by the state. Our aim is to create easy-to-understand visuals that show what's happening and get people thinking about solutions. We'll look closely at how different areas are dealing with water shortages to figure out where to focus our efforts to help.
 
-## Goal
-
-The goal of our project is to develop an Interactive Drought Dashboard that presents a detailed view of Arizona's drought conditions from 2000 to the present. This interactive tool allows users to examine drought trends over time and analyze the data for specific time frames or particular counties, providing a dynamic and user-focused experience. The goal includes:
-
--   Providing geographic visualizations, including maps showcasing Arizona's counties, allowing users to filter and analyze data at the county level.
-
--   Enable users to track trends over time within a particular county or to compare the severity of the drought across counties.
-
--   Create dynamic time series analysis, showcasing the evolution of drought severity over time, complemented by statistical insights through stacked bar plots and pie charts illustrating average drought levels across counties and years.
-
 ## Why this dataset
 
 We chose the Arizona's Drought Conditions dataset sourced from the Arizona Drought Monitoring Technical Committee, because it offers real-time, up-to-date information right up to the present. This allows us to analyze ongoing drought patterns and make immediate, informed decisions for water conservation and resource management in Arizona.
@@ -67,7 +57,7 @@ We chose the Arizona's Drought Conditions dataset sourced from the Arizona Droug
 ```{r dataset, message=FALSE}
 
 #Importing the dataset using read_excel
-data <- read_excel("drought_data.xlsx")
+data <- read_excel("./Shiny App/data/drought_data.xlsx")
 
 ```
 
@@ -110,6 +100,10 @@ The data-set contains 17,386 rows and 9 columns, showing Arizona's drought numbe
 ## Research Question
 
 How have drought conditions evolved across different counties in Arizona from 2000 to the present, and what are the implications for water resource management and policy-making?
+
+## Goal
+
+The goal of our project is to develop an Interactive Drought Dashboard that presents a detailed view of Arizona's drought conditions from 2000 to the present. This interactive tool allows users to examine drought trends over time and analyze the data for specific time frames or particular counties, providing a dynamic and user-focused experience.
 
 ## Analysis
 

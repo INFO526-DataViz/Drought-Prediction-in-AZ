@@ -19,7 +19,8 @@ library(geojsonio)
 
 #load dataset
 
-drought_df <- read_excel("data/drought_data.xlsx", sheet = "Total Area by County")
+drought_df <- read_excel("C:/Users/Hari/Documents/Data viz/Graph-Gurus/final/data/drought_data.xlsx", sheet = "Total Area by County")
+
 
 # Data-preprocessing: drought data-----------------------------------------------
 
@@ -29,13 +30,13 @@ drought_df <- drought_df %>%
 
 # Calculate the yearly average for each drought level including 'None'
 yearly_data <- drought_df %>%
-  group_by(Year) %>%
+  group_by(Year, County) %>%
   summarise(across(c(None:D4), mean, na.rm = TRUE)) %>%
   pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value")
 
 # Normalize the values to percentages
 yearly_data <- yearly_data %>%
-  group_by(Year) %>%
+  group_by(Year, County) %>%
   mutate(Percentage = Value / sum(Value) * 100) %>%
   ungroup()
 
@@ -49,6 +50,9 @@ drought_colors <- c(
   "D4" = "#654321"  # Brown
 )
 
+# Load GeoJSON data for Arizona counties
+arizona_counties <- st_read("D:/New downloads/arizona-with-county-boundaries_1085.geojson")
+
 # Define UI --------------------------------------------------------------------
 
 ui <- dashboardPage(
@@ -56,8 +60,10 @@ ui <- dashboardPage(
   dashboardSidebar(),
   dashboardBody(
     fluidRow(
+      leafletOutput("map"),
       box(width = 10, plotOutput("barplot"),
-      box(width = 10, plotOutput("donutplot")) )
+          box(width = 10, plotOutput("donutplot")))
+      
     )
   )
 )
@@ -67,22 +73,63 @@ ui <- dashboardPage(
 
 server <- function(input, output){
   
+  # Reactive value to store the selected county
+  selected_county <- reactiveVal(NULL)
+  
+  # Update selected county on map click
+  observe({
+    click_latlng <- input$map_shape_click
+    if (!is.null(click_latlng)) {
+      # Create an sf point object with the correct CRS
+      click_point <- st_sfc(st_point(c(click_latlng$lng, click_latlng$lat)), crs = st_crs(arizona_counties))
+      
+      # Find intersection between point and counties
+      intersecting_counties <- st_intersection(arizona_counties, click_point)
+      
+      # Take the first intersecting county (you might want to handle multiple results differently)
+      selected_county(intersecting_counties$name)
+    }
+  })
+  
+  # Render Leaflet map
+  output$map <- renderLeaflet({
+    leaflet() %>%
+      setView(lng = -111.6646, lat = 34.0489, zoom = 6) %>%
+      addTiles() %>%
+      addPolygons(data = arizona_counties,
+                  group = "counties",
+                  options = pathOptions(weight = 0.5, color = "white", fillOpacity = 1, fillColor = "orange"),
+                  label = ~name
+      ) %>%
+      addLabelOnlyMarkers(data = arizona_counties,
+                          lng = ~st_coordinates(st_centroid(geometry))[1],
+                          lat = ~st_coordinates(st_centroid(geometry))[2],
+                          label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))
+  })
+  
   output$barplot <- renderPlot({
-    ggplot(yearly_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+    if (!is.null(selected_county())) {
+      yearly_data_filtered <- filter(yearly_data, County == selected_county())
+    }
+    
+    ggplot(yearly_data_filtered, aes(x = Year, y = Percentage, fill = Drought_Level)) +
       geom_bar(stat = "identity", position = "fill") +
       scale_fill_manual(values = drought_colors) +
       scale_y_continuous(labels = scales::percent_format()) +
       labs(title = "Average Yearly Drought Levels", x = "Year", y = "Percentage", fill = "Drought Level") +
-      theme_minimal() +
+      theme_minimal() + 
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
   })
   
   
   
   output$donutplot <- renderPlot({
+    drought_filtered <- drought_df
+    if (!is.null(selected_county())) {
+      drought_filtered <- filter(drought_df, County == selected_county())
+    }
     
-    # Assuming 'drought_df' has columns 'D0', 'D1', 'D2', 'D3', 'D4', and 'None'
-    drought_totals <- drought_df %>% 
+    drought_totals <- drought_filtered %>% 
       summarise(D0 = sum(D0, na.rm = TRUE),
                 D1 = sum(D1, na.rm = TRUE),
                 D2 = sum(D2, na.rm = TRUE),
@@ -103,7 +150,6 @@ server <- function(input, output){
       scale_fill_manual(values = drought_colors) +
       geom_text(aes(label = sprintf("%0.2f%%", Percentage)), position = position_stack(vjust = 0.5)) +
       xlim(c(0.15, 2.5))
-    
     
   })
 }

@@ -77,10 +77,11 @@ data("penguins")
 
 ## Our Data set {transition="fade-in slide-out"}
 
+![](images/TypeLevelExplain.jpg){fig-align="center" width="250"}
+
 -   The Arizona Drought Conditions Dataset is a comprehensive collection of data that provides crucial insights into short-term and long-term drought conditions in various counties within the state of Arizona.
 
 -   The data is sourced from the Arizona Drought Monitoring Technical Committee, which convenes weekly to advise the U.S. Drought Monitor authors on the current drought conditions in Arizona.
-
 
 ## First Question
 
@@ -139,7 +140,6 @@ data("penguins")
 :::
 :::
 
-
 ## Third Question...
 
 ### **Is there a correlation between drought severity and certain times of the year?**
@@ -150,7 +150,7 @@ data("penguins")
 
 ::: columns
 ::: {.column width="50%"}
-![](images/TheScale.jpg){fig-align="center" width="293"}
+![](images/TypeLevelExplain.jpg){fig-align="center"}
 
 ![](images/LongTerm.jpg){fig-align="center"}
 :::
@@ -168,7 +168,7 @@ data("penguins")
 
 ::: columns
 ::: {.column width="50%"}
-![](images/TheScale.jpg){fig-align="center" width="293"}
+![](images/TypeLevelExplain.jpg){fig-align="center" width="360"}
 
 ![](images/ShortTerm.jpg){fig-align="center"}
 :::

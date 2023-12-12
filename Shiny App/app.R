@@ -19,7 +19,7 @@ library(geojsonio)
 
 #load dataset
 
-drought_df <- read_excel("C:/Users/Hari/Documents/Data viz/Graph-Gurus/final/data/drought_data.xlsx", sheet = "Total Area by County")
+drought_df <- read_excel("data/drought_data.xlsx", sheet = "Total Area by County")
 
 
 # Data-preprocessing: drought data-----------------------------------------------
@@ -111,7 +111,9 @@ server <- function(input, output){
     if (!is.null(selected_county())) {
       yearly_data_filtered <- filter(yearly_data, County == selected_county())
     }
-    
+    else {
+      yearly_data_filtered <- yearly_data
+    }
     ggplot(yearly_data_filtered, aes(x = Year, y = Percentage, fill = Drought_Level)) +
       geom_bar(stat = "identity", position = "fill") +
       scale_fill_manual(values = drought_colors) +

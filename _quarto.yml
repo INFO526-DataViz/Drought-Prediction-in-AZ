@@ -19,6 +19,8 @@ website:
         href: presentation.qmd
       - text: About
         href: about.qmd
+      - text: ShinyApp
+        href: https://swethasiripurapu.shinyapps.io/ShinyApp/
     
 
 format:

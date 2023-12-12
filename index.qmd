@@ -6,18 +6,33 @@ format: html
 editor: visual
 ---
 
-### 
+##### Load Data and Libraries
 
-```{r load packages and data}
+```{r load packages and data, message=FALSE, warning=FALSE}
 
 if (!require(pacman)) install.packages(pacman)
 
 pacman::p_load(tidyverse, formattable, dlookr, readxl, writexl)
 
-drought_df <- read_excel("data/drought_data.xlsx", sheet = "Total Area by County")
-percent_drought_df <- read_excel("data/drought_data.xlsx", sheet = "Percent Area by County")
+library(shiny)
+library(ggplot2)
+library(thematic)
+library(ragg)
+library(readr)
+library(stringr)
+library(shinydashboard)
+library(leaflet)
+library(plotly)
+library(readxl)
+library(tidyr)
+library(sf)
+library(dplyr)
+library(geojsonio)
+
+drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Total Area by County")
+percent_drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Percent Area by County")
 # Load GeoJSON data for Arizona counties
-arizona_counties <- st_read("data/arizona-with-county-boundaries_1085.geojson")
+arizona_counties <- st_read("Shiny App/data/arizona-with-county-boundaries_1085.geojson")
 ```
 
 ## Abstract
@@ -71,7 +86,7 @@ yearly_data <- yearly_data %>%
   ungroup()
 ```
 
-```{r define color palette}
+```{r define color palette, warning=FALSE, message=FALSE}
 
 drought_colors <- c(
   "None" = "#FFFFFF", # Assuming 'None' is white
@@ -86,10 +101,10 @@ drought_colors <- c(
 
 ##### BARPLOT
 
-```{r stacked bar plot}
+```{r stacked bar plot, message=FALSE, warning=FALSE}
 
 #Plot
-ggplot(yearly_data_filtered, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+ggplot(yearly_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
       geom_bar(stat = "identity", position = "fill") +
       scale_fill_manual(values = drought_colors) +
       scale_y_continuous(labels = scales::percent_format()) +
@@ -101,10 +116,10 @@ ggplot(yearly_data_filtered, aes(x = Year, y = Percentage, fill = Drought_Level)
 
 ##### TIMESERIES PLOT
 
-```{r timeseries plot}
+```{r timeseries plot, message=FALSE, warning=FALSE}
 
 # Filter county data
-county_data <- drought_filtered %>%
+county_data <- drought_df %>%
       group_by(Year, County) %>%
       summarise(across(c(None:D4), mean, na.rm = TRUE)) %>%
       pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value") %>%
@@ -119,7 +134,7 @@ county_data <- drought_filtered %>%
       geom_area(alpha = 0.7, stat = "identity") +
       scale_fill_manual(values = drought_colors) +
       scale_y_continuous(labels = function(x) paste0(x, "%")) +
-      labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years for", selected_county())) +
+      labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years")) +
       theme_minimal() +
       theme(legend.position = "right",
             plot.title = element_text(hjust = 0.6, size = 12),
@@ -148,7 +163,7 @@ When a user interacts with the Leaflet map and selects a county, the donut plot 
 ```{r donut plot : preprocessing}
 #Calculate percentages
     
-    drought_totals <- drought_filtered %>% 
+    drought_totals <- drought_df %>% 
       summarise(D0 = sum(D0, na.rm = TRUE),
                 D1 = sum(D1, na.rm = TRUE),
                 D2 = sum(D2, na.rm = TRUE),
@@ -163,6 +178,24 @@ When a user interacts with the Leaflet map and selects a county, the donut plot 
       mutate(Percentage = Area / total_area * 100)
     
     
+```
+
+##### LEAFLET PLOT
+
+```{r Leaflet }
+
+    leaflet() %>%
+      setView(lng = -111.6646, lat = 34.0489, zoom = 6) %>%
+      addTiles() %>%
+      addPolygons(data = arizona_counties,
+                  group = "counties",
+                  options = pathOptions(weight = 0.5, color = "white", fillOpacity = 1, fillColor = "orange"),
+                  label = ~name
+      ) %>%
+      addLabelOnlyMarkers(data = arizona_counties,
+                          lng = ~st_coordinates(st_centroid(geometry))[1],
+                          lat = ~st_coordinates(st_centroid(geometry))[2],
+                          label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))
 ```
 
 ##### DONUT PLOT
@@ -181,7 +214,7 @@ ggplot(drought_totals, aes(x = 2, y = Percentage, fill = Drought_Level)) +
 
 This spatial analysis is not only critical for current drought management strategies but also sets the foundation for our next line of inquiry. Understanding the distribution of drought severity levels in different counties leads us naturally to Question 3, where we explore whether there's a correlation between drought severity and specific times of the year.
 
-### Question 3: **Is there a correlation Between Drought Severity and Seasonality?**
+### Question 3:  **Is there a correlation between drought severity and certain times of the year?**
 
 Building on our understanding of drought severity distribution across Arizona's counties, we aim to further examine if these drought conditions correlate with particular times of the year. This investigation is crucial for identifying seasonal patterns in drought severity, which can inform more effective drought management and preparedness strategies.
 
@@ -233,9 +266,13 @@ In addressing Question 3, our focus shifted to understanding if drought severity
 
 ```{r Chloropleth map}
 
-#Plot
+
+#Pick a date of intreset for our report, passing as an input to shiny
+dates_of_interest <- as.Date(c("2005-04-26 UTC"))
+
+#Filter with date
 drought_data_filtered <- drought_data_geospatial %>%
-      filter(Date == as.Date(input$dateInput))
+  filter(Date %in% dates_of_interest)
     
     
       # Plot the map with ggplot2 and sf
@@ -250,7 +287,7 @@ drought_data_filtered <- drought_data_geospatial %>%
         limits = c(0, 5), 
         oob = scales::oob_squish
       ) +
-      labs(title = paste("Drought Levels in Arizona on", format(as.Date(input$dateInput), "%m/%d/%Y"))) +
+      labs(title = paste("Drought Levels in Arizona on 2005-04-26")) +
       theme_minimal() +
       theme(
         legend.position = "right",
@@ -261,6 +298,8 @@ drought_data_filtered <- drought_data_geospatial %>%
         axis.ticks = element_blank()
       )
 ```
+
+\
 
 ## Interpretation
 

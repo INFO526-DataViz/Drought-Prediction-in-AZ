@@ -62,7 +62,8 @@ ui <- dashboardPage(
     fluidRow(
       leafletOutput("map"),
       box(width = 10, plotOutput("barplot"),
-          box(width = 10, plotOutput("donutplot")))
+          box(width = 10, plotOutput("donutplot"),
+              box(width = 10, plotOutput("timeseriesplot"))))
       
     )
   )
@@ -154,6 +155,33 @@ server <- function(input, output){
       xlim(c(0.15, 2.5))
     
   })
+  
+  output$timeseriesplot <- renderPlot({
+    # req(input$county)
+    drought_filtered <- drought_df
+    if (!is.null(selected_county())) {
+      drought_filtered <- filter(drought_df, County == selected_county())
+    }
+    county_data <-  drought_filtered %>%
+      group_by(Year, County) %>%
+      summarise(across(c(None:D4), mean, na.rm = TRUE)) %>%
+      pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value") %>%
+      mutate(Percentage = Value / sum(Value) * 100) %>%
+      ungroup()
+    
+    county_data$Year <- as.Date(paste0(county_data$Year, "-01-01"))
+    
+    ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+      geom_area(alpha = 0.7, stat = "identity") +
+      scale_fill_manual(values = drought_colors) +
+      scale_y_continuous(labels = function(x) paste0(x, "%")) +
+      labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years for",  selected_county())) +
+      theme_minimal()
+    
+  })
+  
+  
+  
 }
 
 

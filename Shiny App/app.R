@@ -55,20 +55,22 @@ arizona_counties <- st_read("data/arizona-with-county-boundaries_1085.geojson")
 
 # Define UI --------------------------------------------------------------------
 
-ui <- dashboardPage(
-  dashboardHeader(title = "Drought in Arizona (2000-Present)"),
-  dashboardSidebar(),
-  dashboardBody(
-    fluidRow(
-      leafletOutput("map"),
-      box(width = 10, plotOutput("barplot"),
-          box(width = 10, plotOutput("donutplot"),
-              box(width = 10, plotOutput("timeseriesplot"))))
-      
-    )
-  )
+ui <- navbarPage("Drought in Arizona (2000-Present)",
+                 tabPanel("Plot",
+                          fluidRow(
+                            box(width = 6, plotOutput("barplot")),  # Adjust width as needed
+                            box(width = 6, plotOutput("donutplot"))  # Adjust width as needed
+                          )
+                 ),
+                 tabPanel("Data",
+                          fluidRow(
+                            box(width = 12, align = "center", tableOutput("table"))  # Add align = "center"
+                          )
+                 ),
+                 tags$head(tags$style(HTML("
+                   .navbar {background-color: navajowhite !important;}
+                 ")))
 )
-
 
 # Define server function --------------------------------------------
 

@@ -51,7 +51,7 @@ drought_colors <- c(
 )
 
 # Load GeoJSON data for Arizona counties
-arizona_counties <- st_read("D:/New downloads/arizona-with-county-boundaries_1085.geojson")
+arizona_counties <- st_read("data/arizona-with-county-boundaries_1085.geojson")
 
 # Define UI --------------------------------------------------------------------
 

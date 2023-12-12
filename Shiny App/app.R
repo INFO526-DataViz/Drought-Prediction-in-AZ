@@ -20,6 +20,10 @@ library(geojsonio)
 #load dataset
 
 drought_df <- read_excel("data/drought_data.xlsx", sheet = "Total Area by County")
+percent_drought_df <- read_excel("data/drought_data.xlsx", sheet = "Percent Area by County")
+
+# Load GeoJSON data for Arizona counties
+arizona_counties <- st_read("data/arizona-with-county-boundaries_1085.geojson")
 
 
 # Data-preprocessing: drought data-----------------------------------------------
@@ -40,7 +44,41 @@ yearly_data <- yearly_data %>%
   mutate(Percentage = Value / sum(Value) * 100) %>%
   ungroup()
 
-# Define a color palette
+
+arizona_counties_new <- dplyr::rename(arizona_counties, County = name)
+
+arizona_counties_new <- arizona_counties_new %>%
+  select(County, geometry)
+
+percent_drought_df$County <- as.character(percent_drought_df$County)
+arizona_counties_new$County <- as.character(arizona_counties_new$County)
+percent_drought_df$Date<- as.Date(percent_drought_df$Date)
+
+drought_data_geospatial <- percent_drought_df %>%
+  left_join(arizona_counties_new, by = "County")
+
+#Create a column for Droughtlevel
+drought_data_geospatial <- drought_data_geospatial %>%
+  mutate(
+    Max_Value = pmax(None, D0, D1, D2, D3, D4, na.rm = TRUE),
+    Drought_Level = case_when(
+      None == Max_Value ~ "None",
+      D0 == Max_Value ~ "D0",
+      D1 == Max_Value ~ "D1",
+      D2 == Max_Value ~ "D2",
+      D3 == Max_Value ~ "D3",
+      D4 == Max_Value ~ "D4",
+      TRUE ~ NA_character_  
+    )
+  )
+
+#Drop Max_Value
+drought_data_geospatial$Max_Value <- NULL
+drought_data_geospatial$Date <- as.Date(drought_data_geospatial$Date)
+
+
+# Define color palette----------------------------------------------------------
+
 drought_colors <- c(
   "None" = "#FFFFFF", # Assuming 'None' is white
   "D0" = "#FFFF00", # Yellow
@@ -50,26 +88,54 @@ drought_colors <- c(
   "D4" = "#654321"  # Brown
 )
 
-# Load GeoJSON data for Arizona counties
-arizona_counties <- st_read("data/arizona-with-county-boundaries_1085.geojson")
-
 # Define UI --------------------------------------------------------------------
 
-ui <- navbarPage("Drought in Arizona (2000-Present)",
-                 tabPanel("Plot",
-                          fluidRow(
-                            box(width = 6, plotOutput("barplot")),  # Adjust width as needed
-                            box(width = 6, plotOutput("donutplot"))  # Adjust width as needed
-                          )
-                 ),
-                 tabPanel("Data",
-                          fluidRow(
-                            box(width = 12, align = "center", tableOutput("table"))  # Add align = "center"
-                          )
-                 ),
-                 tags$head(tags$style(HTML("
-                   .navbar {background-color: navajowhite !important;}
-                 ")))
+ui <- dashboardPage(
+  dashboardHeader(title = "Drought in Arizona"),
+  dashboardSidebar(disable = TRUE), # Disable the sidebar if not needed
+  dashboardBody(
+    tags$head(
+      tags$style(HTML("
+      
+                         /* Change the header background color */
+                        .skin-blue .main-header .logo {
+                          background-color: #5C4033; /* Dark brown */
+                            color: #ffffff; /* White text color */
+                        }
+                      .skin-blue .main-header .navbar {
+                        background-color: #5C4033; 
+                      }
+                      /* Change header menu text color to white */
+                        .skin-blue .main-header li a {
+                          color: #ffffff; /* White text color */
+                        }
+                        
+                        .box {
+          border: 1px solid #5C4033; /* Dark brown border for boxes */
+          background-color: #FFFFFF; /* White background for boxes */
+          border-radius: 5px;
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+        }
+                      "))
+    ),
+    
+    fluidRow(
+      column(width = 4,
+             box(width = NULL, leafletOutput("map", height = "250px"), style = "overflow: hidden;")
+      ),
+      column(width = 8,
+             box(plotOutput("barplot", height = "250px")), # Adjust height as needed
+             box(plotOutput("donutplot", height = "250px")) # Adjust height as needed
+      )
+    ),
+    br(), # Line break
+    fluidRow(width =4, 
+      column(width = 8, dateInput("dateInput", "Choose a Date", value = Sys.Date())),
+      box(plotOutput("droughtMap", height = "250px")),
+      box(plotlyOutput("timeseriesplot", height = "250px"))
+    )
+  )
 )
 
 # Define server function --------------------------------------------
@@ -158,13 +224,40 @@ server <- function(input, output){
     
   })
   
-  output$timeseriesplot <- renderPlot({
-    # req(input$county)
+  
+  output$droughtMap <- renderPlot({
+    # Filter the data based on the selected date from the dateInput
+    filtered_data <- drought_data_geospatial %>%
+      filter(Date == as.Date(input$dateInput))
+    
+    # Left join with the Arizona counties spatial data
+    joined_data <- arizona_counties_new %>%
+      left_join(filtered_data, by = "County") %>%
+      select(County, geometry.x, Drought_Level) %>%
+      rename(geometry = geometry.x) %>%
+      st_as_sf(wkt = "geometry")
+    
+    # Plot the map with ggplot2 and sf
+    ggplot(data = joined_data) +
+      geom_sf(aes(fill = Drought_Level), color = "black", size = 0.2) +
+      scale_fill_manual(values = drought_colors, name = "Drought Level") +
+      labs(title = paste("Drought Levels in Arizona on", format(as.Date(input$dateInput), "%m/%d/%Y"))) +
+      theme_minimal() +
+      theme(legend.position = "right",
+            plot.title = element_text(hjust = 0.6, size = 14),
+            legend.text = element_text(size = 8),
+            legend.title = element_text(size = 10)) +
+      guides(fill = guide_legend(title.position = "top", title.hjust = 0.5))
+  })
+  
+  output$timeseriesplot <- renderPlotly({
     drought_filtered <- drought_df
+    
     if (!is.null(selected_county())) {
       drought_filtered <- filter(drought_df, County == selected_county())
     }
-    county_data <-  drought_filtered %>%
+    
+    county_data <- drought_filtered %>%
       group_by(Year, County) %>%
       summarise(across(c(None:D4), mean, na.rm = TRUE)) %>%
       pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value") %>%
@@ -173,16 +266,23 @@ server <- function(input, output){
     
     county_data$Year <- as.Date(paste0(county_data$Year, "-01-01"))
     
-    ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+    p <- ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
       geom_area(alpha = 0.7, stat = "identity") +
       scale_fill_manual(values = drought_colors) +
       scale_y_continuous(labels = function(x) paste0(x, "%")) +
-      labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years for",  selected_county())) +
-      theme_minimal()
+      labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years for", selected_county())) +
+      theme_minimal() +
+      theme(legend.position = "right",
+            plot.title = element_text(hjust = 0.6, size = 12),
+            legend.text = element_text(size = 8),
+            legend.title = element_text(size = 10)) +
+      guides(fill = guide_legend(title.position = "top", title.hjust = 0.5))
+    
+    # Convert ggplot to plotly for animation
+    p <- ggplotly(p, tooltip = "all", dynamicTicks = TRUE)
+    
     
   })
-  
-  
   
 }
 

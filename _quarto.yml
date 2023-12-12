@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: The Silent Rivers of Arizona
+  title: Drought in Arizona
   navbar:
     background: "navajowhite"  # Replace with your desired background color
     foreground: "black"

@@ -68,31 +68,81 @@ data("penguins")
 ![](images/Arizona.jpg){fig-alt="Arizona State" fig-align="center" width="426"}
 
 ## Our Data set {transition="convex-in fade-out"}
--   The Arizona Drought Conditions Dataset is a comprehensive collection of data that provides crucial insights into short-term and long-term drought conditions in various counties within the state of Arizona.
 
--   The data is sourced from the Arizona Drought Monitoring Technical Committee, which convenes weekly to advise the U.S. Drought Monitor authors on the current drought conditions in Arizona.
-
-## Our Data set {transition="convex-in fade-out"}
 ::: r-stack
 ![](images/DataSetExplain.jpg){.fragment fig-align="center" width="709"}
 
 ![](images/DataSetActual.jpg){.fragment fig-align="center" width="817"}
 :::
 
-## The Problem statement {transition="fade-in slide-out"}
+## Our Data set {transition="fade-in slide-out"}
 
-### An interactive Drought Dashboard that presents a detailed view of Arizona's drought conditions from 2000 to the present.
+-   The Arizona Drought Conditions Dataset is a comprehensive collection of data that provides crucial insights into short-term and long-term drought conditions in various counties within the state of Arizona.
 
-## Code We Used {transition="concave-in zoom-out"}
+-   The data is sourced from the Arizona Drought Monitoring Technical Committee, which convenes weekly to advise the U.S. Drought Monitor authors on the current drought conditions in Arizona.
 
-```{r, echo=FALSE}
-model <- lm(mpg ~ speed, data = mtcars) 
 
-model |> tidy()
+## First Question
 
-model |> glance()
+### What are the most affected areas in Arizona ??
+
+## The Code
+
+```{r}
+#| eval: false
+#| echo: true
+# Reactive value to store the selected county
+  selected_county <- reactiveVal(NULL)
+  
+  # Update selected county on map click
+  observe({
+    click_latlng <- input$map_shape_click
+    if (!is.null(click_latlng)) {
+      # Create an sf point object with the correct CRS
+      click_point <- st_sfc(st_point(c(click_latlng$lng, click_latlng$lat)), crs = st_crs(arizona_counties))
+      
+      # Find intersection between point and counties
+      intersecting_counties <- st_intersection(arizona_counties, click_point)
+      
+      # Take the first intersecting county (you might want to handle multiple results differently)
+      selected_county(intersecting_counties$name)
+    }
+})
 
 ```
+
+## The Plot
+
+::: columns
+::: {.column width="50%"}
+![](images/SecondQes1.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](images/SecondQes2.jpg){fig-align="center"}
+:::
+:::
+
+## The Second Question... {transition="fade-in concave-out"}
+
+### How has the severity of draught changed over time in Arizona.
+
+## The Plots {transition="fade-in convex-out"}
+
+::: columns
+::: {.column width="50%"}
+![](images/FirstQues1.png){fig-align="center" width="1354"}
+:::
+
+::: {.column width="50%"}
+![](images/FirstQues2.png){fig-align="center" width="2148"}
+:::
+:::
+
+
+## Third Question...
+
+### **Is there a correlation between drought severity and certain times of the year?**
 
 ## What we got... {transition="zoom-in convex-out"}
 
@@ -106,13 +156,11 @@ model |> glance()
 :::
 
 ::: {.column width="50%"}
-::: r-stack
-![](images/Long1.jpg){.fragment fig-align="center"}
+![](images/Long1.jpg){fig-align="center" width="188"}
 
-![](images/Long2.jpg){.fragment fig-align="center"}
+![](images/Long2.jpg){fig-align="center" width="194"}
 
-![](images/Long3.jpg){.fragment fig-align="center"}
-:::
+![](images/Long3.jpg){fig-align="center" width="208"}
 :::
 :::
 
@@ -126,13 +174,11 @@ model |> glance()
 :::
 
 ::: {.column width="50%"}
-::: r-stack
-![](images/Short1.jpg){.fragment fig-align="center"}
+![](images/Short1.jpg){width="244"}
 
-![](images/Short2.jpg){.fragment fig-align="center"}
+![](images/Short2.jpg){width="246"}
 
-![](images/Short3.jpg){.fragment fig-align="center"}
-:::
+![](images/Short3.jpg){width="247"}
 :::
 :::
 

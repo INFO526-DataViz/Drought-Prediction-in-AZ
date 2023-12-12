@@ -1,5 +1,4 @@
 ---
-title: "Drought in Arizona"
 subtitle: "INFO 526 - Project Final"
 author: "Graph Gurus"
 format: html

@@ -68,20 +68,22 @@ data("penguins")
 ![](images/Arizona.jpg){fig-alt="Arizona State" fig-align="center" width="426"}
 
 ## Our Data set {transition="convex-in fade-out"}
+-   The Arizona Drought Conditions Dataset is a comprehensive collection of data that provides crucial insights into short-term and long-term drought conditions in various counties within the state of Arizona.
 
+-   The data is sourced from the Arizona Drought Monitoring Technical Committee, which convenes weekly to advise the U.S. Drought Monitor authors on the current drought conditions in Arizona.
+
+## Our Data set {transition="convex-in fade-out"}
 ::: r-stack
 ![](images/DataSetExplain.jpg){.fragment fig-align="center" width="709"}
 
 ![](images/DataSetActual.jpg){.fragment fig-align="center" width="817"}
 :::
 
-## Problem statement {transition="fade-in slide-out"}
+## The Problem statement {transition="fade-in slide-out"}
 
-## What We used
+### An interactive Drought Dashboard that presents a detailed view of Arizona's drought conditions from 2000 to the present.
 
-Shiny app
-
-## Code We Used
+## Code We Used {transition="concave-in zoom-out"}
 
 ```{r, echo=FALSE}
 model <- lm(mpg ~ speed, data = mtcars) 
@@ -92,25 +94,48 @@ model |> glance()
 
 ```
 
-## What we got
+## What we got... {transition="zoom-in convex-out"}
+
+### Long Term
 
 ::: columns
 ::: {.column width="50%"}
--   Some text
+![](images/TheScale.jpg){fig-align="center" width="293"}
 
--   goes here
+![](images/LongTerm.jpg){fig-align="center"}
 :::
 
 ::: {.column width="50%"}
-```{r, warning=FALSE, fig.width=5.5}
-penguins |>
-  ggplot(aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot(linewidth = 0.75,
-               outlier.size = 2.5) +
-  theme_minimal(base_size = 15) +
-  theme(legend.key.size = unit(0.8, "cm"))
-```
+::: r-stack
+![](images/Long1.jpg){.fragment fig-align="center"}
+
+![](images/Long2.jpg){.fragment fig-align="center"}
+
+![](images/Long3.jpg){.fragment fig-align="center"}
+:::
 :::
 :::
 
-## Conclusion
+## Short Term {transition="slide-in convex-out"}
+
+::: columns
+::: {.column width="50%"}
+![](images/TheScale.jpg){fig-align="center" width="293"}
+
+![](images/ShortTerm.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: r-stack
+![](images/Short1.jpg){.fragment fig-align="center"}
+
+![](images/Short2.jpg){.fragment fig-align="center"}
+
+![](images/Short3.jpg){.fragment fig-align="center"}
+:::
+:::
+:::
+
+##  {transition="convex-in concave-out"}
+
+![](images/ThankYou.jpg){fig-align="center" width="100%"}

@@ -5,7 +5,7 @@ account: swethasiripurapu
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10737264
-bundleId: 8016845
+bundleId: 8039417
 url: https://swethasiripurapu.shinyapps.io/ShinyApp/
 version: 1
 asMultiple: FALSE

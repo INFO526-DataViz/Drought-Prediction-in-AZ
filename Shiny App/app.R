@@ -44,12 +44,14 @@ yearly_data <- yearly_data %>%
   mutate(Percentage = Value / sum(Value) * 100) %>%
   ungroup()
 
-
+#Rename Column from name to County
 arizona_counties_new <- dplyr::rename(arizona_counties, County = name)
 
+#Drop all columns ecept County and geometry
 arizona_counties_new <- arizona_counties_new %>%
   select(County, geometry)
 
+#Convert to req data types
 percent_drought_df$County <- as.character(percent_drought_df$County)
 arizona_counties_new$County <- as.character(arizona_counties_new$County)
 percent_drought_df$Date<- as.Date(percent_drought_df$Date)
@@ -57,23 +59,24 @@ percent_drought_df$Date<- as.Date(percent_drought_df$Date)
 drought_data_geospatial <- percent_drought_df %>%
   left_join(arizona_counties_new, by = "County")
 
-#Create a column for Droughtlevel
-drought_data_geospatial <- drought_data_geospatial %>%
-  mutate(
-    Max_Value = pmax(None, D0, D1, D2, D3, D4, na.rm = TRUE),
-    Drought_Level = case_when(
-      None == Max_Value ~ "None",
-      D0 == Max_Value ~ "D0",
-      D1 == Max_Value ~ "D1",
-      D2 == Max_Value ~ "D2",
-      D3 == Max_Value ~ "D3",
-      D4 == Max_Value ~ "D4",
-      TRUE ~ NA_character_  
-    )
-  )
+# Assign weights to the drought levels
+drought_weights <- c(None = 0, D0 = 1, D1 = 2, D2 = 3, D3 = 4, D4 = 5)
 
-#Drop Max_Value
-drought_data_geospatial$Max_Value <- NULL
+# Calculate 'Drought Score' by multiplying the area percentages by the weights
+drought_data_geospatial <- drought_data_geospatial %>%
+  mutate(Drought_Score = (None * drought_weights[["None"]]) +
+           (D0 * drought_weights[["D0"]]) +
+           (D1 * drought_weights[["D1"]]) +
+           (D2 * drought_weights[["D2"]]) +
+           (D3 * drought_weights[["D3"]]) +
+           (D4 * drought_weights[["D4"]]))
+
+# Normalize 'Drought Score' 
+# Assuming that the maximum possible score is 5 (for D4 at 100% coverage)
+drought_data_geospatial <- drought_data_geospatial %>%
+  mutate(Normalized_Score = Drought_Score / max(Drought_Score))
+
+#Make sure your date column is type date
 drought_data_geospatial$Date <- as.Date(drought_data_geospatial$Date)
 
 
@@ -116,16 +119,28 @@ ui <- dashboardPage(
           border-radius: 5px;
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
           margin-bottom: 20px;
+                        }
+                        
+                        
+        .leaflet-title {
+          padding: 5px 10px;
+          font-size: 18px;
+          text-align: left;
+          font-weight: bold;
+          color: #333; /* You can change the color as needed */
         }
+                        
                       "))
     ),
     
     fluidRow(
       column(width = 4,
+             div(class = "leaflet-title", "Choose a County"),
              box(width = NULL, leafletOutput("map", height = "250px"), style = "overflow: hidden;")
       ),
       column(width = 8,
-             box(plotOutput("barplot", height = "250px")), # Adjust height as needed
+             hr(),
+             box(plotOutput("barplot", height = "250px")),
              box(plotOutput("donutplot", height = "250px")) # Adjust height as needed
       )
     ),
@@ -176,6 +191,7 @@ server <- function(input, output){
                           label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))
   })
   
+  #Render Barplot
   output$barplot <- renderPlot({
     if (!is.null(selected_county())) {
       yearly_data_filtered <- filter(yearly_data, County == selected_county())
@@ -192,8 +208,7 @@ server <- function(input, output){
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
   })
   
-  
-  
+  #Render Donut plo
   output$donutplot <- renderPlot({
     drought_filtered <- drought_df
     if (!is.null(selected_county())) {
@@ -225,31 +240,39 @@ server <- function(input, output){
   })
   
   
+  #Render Drought Map
   output$droughtMap <- renderPlot({
     # Filter the data based on the selected date from the dateInput
-    filtered_data <- drought_data_geospatial %>%
+    drought_data_filtered <- drought_data_geospatial %>%
       filter(Date == as.Date(input$dateInput))
     
-    # Left join with the Arizona counties spatial data
-    joined_data <- arizona_counties_new %>%
-      left_join(filtered_data, by = "County") %>%
-      select(County, geometry.x, Drought_Level) %>%
-      rename(geometry = geometry.x) %>%
-      st_as_sf(wkt = "geometry")
     
-    # Plot the map with ggplot2 and sf
-    ggplot(data = joined_data) +
-      geom_sf(aes(fill = Drought_Level), color = "black", size = 0.2) +
-      scale_fill_manual(values = drought_colors, name = "Drought Level") +
+      # Plot the map with ggplot2 and sf
+    ggplot(data = drought_data_filtered) +
+      geom_sf(data = drought_data_filtered$geometry,
+              aes(fill = drought_data_filtered$Normalized_Score), color = "black", size = 0.2) +
+      scale_fill_gradientn(
+        colors = drought_colors,
+        name = "Drought Level",
+        breaks = c(0, 1, 2, 3, 4, 5), 
+        labels = c("None", "D0", "D1", "D2", "D3", "D4"), # Specifying the labels for the breaks
+        limits = c(0, 5), 
+        oob = scales::oob_squish
+      ) +
       labs(title = paste("Drought Levels in Arizona on", format(as.Date(input$dateInput), "%m/%d/%Y"))) +
       theme_minimal() +
-      theme(legend.position = "right",
-            plot.title = element_text(hjust = 0.6, size = 14),
-            legend.text = element_text(size = 8),
-            legend.title = element_text(size = 10)) +
-      guides(fill = guide_legend(title.position = "top", title.hjust = 0.5))
+      theme(
+        legend.position = "right",
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank()
+      )
   })
   
+  
+  #Render Timeseries Plot
   output$timeseriesplot <- renderPlotly({
     drought_filtered <- drought_df
     

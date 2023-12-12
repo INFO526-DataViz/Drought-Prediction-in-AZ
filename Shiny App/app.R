@@ -127,7 +127,7 @@ ui <- dashboardPage(
           font-size: 18px;
           text-align: left;
           font-weight: bold;
-          color: #333; /* You can change the color as needed */
+          color: #333;
         }
                         
                       "))
@@ -141,7 +141,7 @@ ui <- dashboardPage(
       column(width = 8,
              hr(),
              box(plotOutput("barplot", height = "250px")),
-             box(plotOutput("donutplot", height = "250px")) # Adjust height as needed
+             box(plotOutput("donutplot", height = "250px")) 
       )
     ),
     br(), # Line break
@@ -203,12 +203,12 @@ server <- function(input, output){
       geom_bar(stat = "identity", position = "fill") +
       scale_fill_manual(values = drought_colors) +
       scale_y_continuous(labels = scales::percent_format()) +
-      labs(title = "Average Yearly Drought Levels", x = "Year", y = "Percentage", fill = "Drought Level") +
+      labs(title = paste("Average Yearly Drought Levels for", selected_county()), x = "Year", y = "Percentage", fill = "Drought Level") +
       theme_minimal() + 
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
   })
   
-  #Render Donut plo
+  #Render Donut plot
   output$donutplot <- renderPlot({
     drought_filtered <- drought_df
     if (!is.null(selected_county())) {
@@ -235,6 +235,7 @@ server <- function(input, output){
       theme_void() +
       scale_fill_manual(values = drought_colors) +
       geom_text(aes(label = sprintf("%0.2f%%", Percentage)), position = position_stack(vjust = 0.5)) +
+      labs(title = paste("Pie chart of Drought Levels for", selected_county())) +
       xlim(c(0.15, 2.5))
     
   })

@@ -213,7 +213,7 @@ ggplot(drought_totals, aes(x = 2, y = Percentage, fill = Drought_Level)) +
 
 This spatial analysis is not only critical for current drought management strategies but also sets the foundation for our next line of inquiry. Understanding the distribution of drought severity levels in different counties leads us naturally to Question 3, where we explore whether there's a correlation between drought severity and specific times of the year.
 
-### Question 3:  **Is there a correlation between drought severity and certain times of the year?**
+### Question 3: **Is there a correlation between drought severity and certain times of the year?**
 
 Building on our understanding of drought severity distribution across Arizona's counties, we aim to further examine if these drought conditions correlate with particular times of the year. This investigation is crucial for identifying seasonal patterns in drought severity, which can inform more effective drought management and preparedness strategies.
 

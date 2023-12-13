@@ -12,7 +12,7 @@ editor: visual
 
 if (!require(pacman)) install.packages(pacman)
 
-pacman::p_load(tidyverse, formattable, dlookr, readxl, writexl,geojsonio,shiny,ggplot2,thematic,ragg,readr,stringr,shinydashboard)
+pacman::p_load(jqr, tidyverse, formattable, dlookr, readxl, writexl,geojsonio,shiny,ggplot2,thematic,ragg,readr,stringr,shinydashboard)
 
 
 library(leaflet)

@@ -8,15 +8,32 @@ editor: visual
 
 ##### Load Data and Libraries
 
-{r load packages and data, message=FALSE, warning=FALSE}
+```{r load packages and data, message=FALSE, warning=FALSE}
 
 if (!require(pacman)) install.packages(pacman)
 
 pacman::p_load(tidyverse, formattable, dlookr, readxl, writexl)
 
-library(shiny) library(ggplot2) library(thematic) library(ragg) library(readr) library(stringr) library(shinydashboard) library(leaflet) library(plotly) library(readxl) library(tidyr) library(sf) library(dplyr) library(geojsonio)
+library(shiny)
+library(ggplot2)
+library(thematic)
+library(ragg)
+library(readr)
+library(stringr)
+library(shinydashboard)
+library(leaflet)
+library(plotly)
+library(readxl)
+library(tidyr)
+library(sf)
+library(dplyr)
+library(geojsonio)
 
-drought_df \<- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Total Area by County") percent_drought_df \<- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Percent Area by County") \# Load GeoJSON data for Arizona counties arizona_counties \<- st_read("Shiny App/data/arizona-with-county-boundaries_1085.geojson")
+drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Total Area by County")
+percent_drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Percent Area by County")
+# Load GeoJSON data for Arizona counties
+arizona_counties <- st_read("Shiny App/data/arizona-with-county-boundaries_1085.geojson")
+```
 
 ## Abstract
 
@@ -40,7 +57,7 @@ Our main goal with this project is to raise awareness and encourage action. We'r
 
 ## Analysis
 
-### *Question 1: How has the severity of drought changed over time in Arizona?*
+### **Question 1: How has the severity of drought changed over time in Arizona?**
 
 The variability of drought over time is a critical aspect of climate patterns, especially for arid regions like Arizona. This variability can have profound effects on water allocation, agricultural planning, and natural ecosystems. While historical trends have been studied, the nuanced changes within these trends, and the frequency and intensity of extreme drought conditions, remain areas requiring deeper exploration. In recent years, technological advances and data collection efforts have provided an unprecedented amount of climatic data, offering new opportunities to analyze drought patterns with greater precision. This wealth of data paves the way for more detailed temporal analysis, allowing for a better understanding of the cyclical nature and potential shifts in drought severity.
 
@@ -50,49 +67,88 @@ To answer how drought severity has shifted over time in Arizona, we initiated a 
 
 #### Analysis for Q1
 
-{r data preprocessing, warning=FALSE, message=FALSE}
+```{r data preprocessing, warning=FALSE, message=FALSE}
 
 # Preprocess the data to obtain Year
-
-drought_df \<- drought_df %\>% mutate(Year = format(as.Date(Date), "%Y"))
+drought_df <- drought_df %>%
+  mutate(Year = format(as.Date(Date), "%Y"))
 
 # Calculate the yearly average for each drought level including 'None'
-
-yearly_data \<- drought_df %\>% group_by(Year, County) %\>% summarise(across(c(None:D4), mean, na.rm = TRUE)) %\>% pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value")
+yearly_data <- drought_df %>%
+  group_by(Year, County) %>%
+  summarise(across(c(None:D4), mean, na.rm = TRUE)) %>%
+  pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value")
 
 # Normalize the values to percentages
+yearly_data <- yearly_data %>%
+  group_by(Year, County) %>%
+  mutate(Percentage = Value / sum(Value) * 100) %>%
+  ungroup()
+```
 
-yearly_data \<- yearly_data %\>% group_by(Year, County) %\>% mutate(Percentage = Value / sum(Value) \* 100) %\>% ungroup()
+```{r define color palette, warning=FALSE, message=FALSE}
 
-{r define color palette, warning=FALSE, message=FALSE}
+drought_colors <- c(
+  "None" = "#FFFFFF", # Assuming 'None' is white
+  "D0" = "#FFFF00", # Yellow
+  "D1" = "#FFA500", # Orange
+  "D2" = "#FF0000", # Red
+  "D3" = "#8B0000", # Dark Red
+  "D4" = "#654321"  # Brown
+)
 
-drought_colors \<- c( "None" = "#FFFFFF", \# Assuming 'None' is white "D0" = "#FFFF00", \# Yellow "D1" = "#FFA500", \# Orange "D2" = "#FF0000", \# Red "D3" = "#8B0000", \# Dark Red "D4" = "#654321" \# Brown )
+```
 
 ##### BARPLOT
 
-{r stacked bar plot, message=FALSE, warning=FALSE}
+```{r stacked bar plot, message=FALSE, warning=FALSE}
 
-#Plot ggplot(yearly_data, aes(x = Year, y = Percentage, fill = Drought_Level)) + geom_bar(stat = "identity", position = "fill") + scale_fill_manual(values = drought_colors) + scale_y_continuous(labels = scales::percent_format()) + labs(title = "Average Yearly Drought Levels", x = "Year", y = "Percentage", fill = "Drought Level") + theme_minimal() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+#Plot
+ggplot(yearly_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+      geom_bar(stat = "identity", position = "fill") +
+      scale_fill_manual(values = drought_colors) +
+      scale_y_continuous(labels = scales::percent_format()) +
+      labs(title = "Average Yearly Drought Levels", x = "Year", y = "Percentage", fill = "Drought Level") +
+      theme_minimal() + 
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+
+```
 
 ##### TIMESERIES PLOT
 
-{r timeseries plot, message=FALSE, warning=FALSE}
+```{r timeseries plot, message=FALSE, warning=FALSE}
 
 # Filter county data
+county_data <- drought_df %>%
+      group_by(Year, County) %>%
+      summarise(across(c(None:D4), mean, na.rm = TRUE)) %>%
+      pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value") %>%
+      mutate(Percentage = Value / sum(Value) * 100) %>%
+      ungroup()
+    
+    county_data$Year <- as.Date(paste0(county_data$Year, "-01-01"))
+    
 
-county_data \<- drought_df %\>% group_by(Year, County) %\>% summarise(across(c(None:D4), mean, na.rm = TRUE)) %\>% pivot_longer(cols = c(None:D4), names_to = "Drought_Level", values_to = "Value") %\>% mutate(Percentage = Value / sum(Value) \* 100) %\>% ungroup()
-
-```         
-county_data$Year <- as.Date(paste0(county_data$Year, "-01-01"))
+#Plot
+    p <- ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+      geom_area(alpha = 0.7, stat = "identity") +
+      scale_fill_manual(values = drought_colors) +
+      scale_y_continuous(labels = function(x) paste0(x, "%")) +
+      labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years")) +
+      theme_minimal() +
+      theme(legend.position = "right",
+            plot.title = element_text(hjust = 0.6, size = 12),
+            legend.text = element_text(size = 8),
+            legend.title = element_text(size = 10)) +
+      guides(fill = guide_legend(title.position = "top", title.hjust = 0.5))
+    
+    
+# Convert ggplot to plotly for animation
+p <- ggplotly(p, tooltip = "all", dynamicTicks = TRUE)
+    
 ```
 
-#Plot p \<- ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) + geom_area(alpha = 0.7, stat = "identity") + scale_fill_manual(values = drought_colors) + scale_y_continuous(labels = function(x) paste0(x, "%")) + labs(x = "Year", y = "Percentage", title = paste("Drought Level over the years")) + theme_minimal() + theme(legend.position = "right", plot.title = element_text(hjust = 0.6, size = 12), legend.text = element_text(size = 8), legend.title = element_text(size = 10)) + guides(fill = guide_legend(title.position = "top", title.hjust = 0.5))
-
-# Convert ggplot to plotly for animation
-
-p \<- ggplotly(p, tooltip = "all", dynamicTicks = TRUE)
-
-### *Question 2: What are the most affected areas in Arizona in terms of drought severity?*
+### **Question 2: What are the most affected areas in Arizona in terms of drought severity?**
 
 While our initial analysis highlighted the temporal dynamics of drought in Arizona, we realized that understanding the spatial distribution of drought severity across different counties was equally crucial. This line of inquiry is particularly important because drought impacts vary significantly across regions due to diverse geographical and climatic conditions. For example, some counties might consistently experience higher levels of severe drought categories (such as D3 or D4), indicating a greater vulnerability to drought effects.
 
@@ -104,52 +160,61 @@ When a user interacts with the Leaflet map and selects a county, the donut plot 
 
 #### Analysis for Q2
 
-{r donut plot : preprocessing} #Calculate percentages
-
-```         
-drought_totals <- drought_df %>% 
-  summarise(D0 = sum(D0, na.rm = TRUE),
-            D1 = sum(D1, na.rm = TRUE),
-            D2 = sum(D2, na.rm = TRUE),
-            D3 = sum(D3, na.rm = TRUE),
-            D4 = sum(D4, na.rm = TRUE),
-            None = sum(None, na.rm = TRUE)) %>%
-  pivot_longer(cols = everything(), names_to = "Drought_Level", values_to = "Area")
-
-# Calculate percentages
-total_area <- sum(drought_totals$Area)
-drought_totals <- drought_totals %>%
-  mutate(Percentage = Area / total_area * 100)
+```{r donut plot : preprocessing}
+#Calculate percentages
+    
+    drought_totals <- drought_df %>% 
+      summarise(D0 = sum(D0, na.rm = TRUE),
+                D1 = sum(D1, na.rm = TRUE),
+                D2 = sum(D2, na.rm = TRUE),
+                D3 = sum(D3, na.rm = TRUE),
+                D4 = sum(D4, na.rm = TRUE),
+                None = sum(None, na.rm = TRUE)) %>%
+      pivot_longer(cols = everything(), names_to = "Drought_Level", values_to = "Area")
+    
+    # Calculate percentages
+    total_area <- sum(drought_totals$Area)
+    drought_totals <- drought_totals %>%
+      mutate(Percentage = Area / total_area * 100)
+    
+    
 ```
 
 ##### LEAFLET PLOT
 
-{r Leaflet }
+```{r Leaflet }
 
-```         
-leaflet() %>%
-  setView(lng = -111.6646, lat = 34.0489, zoom = 6) %>%
-  addTiles() %>%
-  addPolygons(data = arizona_counties,
-              group = "counties",
-              options = pathOptions(weight = 0.5, color = "white", fillOpacity = 1, fillColor = "orange"),
-              label = ~name
-  ) %>%
-  addLabelOnlyMarkers(data = arizona_counties,
-                      lng = ~st_coordinates(st_centroid(geometry))[1],
-                      lat = ~st_coordinates(st_centroid(geometry))[2],
-                      label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))
+    leaflet() %>%
+      setView(lng = -111.6646, lat = 34.0489, zoom = 6) %>%
+      addTiles() %>%
+      addPolygons(data = arizona_counties,
+                  group = "counties",
+                  options = pathOptions(weight = 0.5, color = "white", fillOpacity = 1, fillColor = "orange"),
+                  label = ~name
+      ) %>%
+      addLabelOnlyMarkers(data = arizona_counties,
+                          lng = ~st_coordinates(st_centroid(geometry))[1],
+                          lat = ~st_coordinates(st_centroid(geometry))[2],
+                          label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))
 ```
 
 ##### DONUT PLOT
 
-{r donut plot}
+```{r donut plot}
 
-ggplot(drought_totals, aes(x = 2, y = Percentage, fill = Drought_Level)) + geom_bar(stat = "identity", width = 1) + coord_polar(theta = "y") + theme_void() + scale_fill_manual(values = drought_colors) + geom_text(aes(label = sprintf("%0.2f%%", Percentage)), position = position_stack(vjust = 0.5)) + xlim(c(0.15, 2.5))
+ggplot(drought_totals, aes(x = 2, y = Percentage, fill = Drought_Level)) +
+      geom_bar(stat = "identity", width = 1) +
+      coord_polar(theta = "y") +
+      theme_void() +
+      scale_fill_manual(values = drought_colors) +
+      geom_text(aes(label = sprintf("%0.2f%%", Percentage)), position = position_stack(vjust = 0.5)) +
+      xlim(c(0.15, 2.5))
+
+```
 
 This spatial analysis is not only critical for current drought management strategies but also sets the foundation for our next line of inquiry. Understanding the distribution of drought severity levels in different counties leads us naturally to Question 3, where we explore whether there's a correlation between drought severity and specific times of the year.
 
-### Question 3: *Is there a correlation between drought severity and certain times of the year?*
+### Question 3: **Is there a correlation between drought severity and certain times of the year?**
 
 Building on our understanding of drought severity distribution across Arizona's counties, we aim to further examine if these drought conditions correlate with particular times of the year. This investigation is crucial for identifying seasonal patterns in drought severity, which can inform more effective drought management and preparedness strategies.
 
@@ -159,55 +224,79 @@ In addressing Question 3, our focus shifted to understanding if drought severity
 
 #### Analysis for Q3
 
-{r Data preprocessing for Chloropleth map}
+```{r Data preprocessing for Chloropleth map}
 
-#Rename Column from name to County arizona_counties_new \<- dplyr::rename(arizona_counties, County = name)
-
-#Drop all columns ecept County and geometry arizona_counties_new \<- arizona_counties_new %\>% select(County, geometry)
-
-#Convert to req data types percent_drought_df$County <- as.character(percent_drought_df$County) arizona_counties_new$County <- as.character(arizona_counties_new$County) percent_drought_df$Date<- as.Date(percent_drought_df$Date)
-
-drought_data_geospatial \<- percent_drought_df %\>% left_join(arizona_counties_new, by = "County")
-
-\# Assign weights to the drought levels drought_weights \<- c(None = 0, D0 = 1, D1 = 2, D2 = 3, D3 = 4, D4 = 5)
-
-\# Calculate 'Drought Score' by multiplying the area percentages by the weights drought_data_geospatial \<- drought_data_geospatial %\>% mutate(Drought_Score = (None \* drought_weights\[\["None"\]\]) + (D0 \* drought_weights\[\["D0"\]\]) + (D1 \* drought_weights\[\["D1"\]\]) + (D2 \* drought_weights\[\["D2"\]\]) + (D3 \* drought_weights\[\["D3"\]\]) + (D4 \* drought_weights\[\["D4"\]\]))
-
-\# Normalize 'Drought Score' \# Assuming that the maximum possible score is 5 (for D4 at 100% coverage) drought_data_geospatial \<- drought_data_geospatial %\>% mutate(Normalized_Score = Drought_Score / max(Drought_Score))
-
-#Make sure your date column is type date drought_data_geospatial$Date <- as.Date(drought_data_geospatial$Date)
+#Rename Column from name to County
+  arizona_counties_new <- dplyr::rename(arizona_counties, County = name)
+  
+  #Drop all columns ecept County and geometry
+  arizona_counties_new <- arizona_counties_new %>%
+    select(County, geometry)
+  
+  #Convert to req data types
+  percent_drought_df$County <- as.character(percent_drought_df$County)
+  arizona_counties_new$County <- as.character(arizona_counties_new$County)
+  percent_drought_df$Date<- as.Date(percent_drought_df$Date)
+  
+  drought_data_geospatial <- percent_drought_df %>%
+    left_join(arizona_counties_new, by = "County")
+  
+  # Assign weights to the drought levels
+  drought_weights <- c(None = 0, D0 = 1, D1 = 2, D2 = 3, D3 = 4, D4 = 5)
+  
+  # Calculate 'Drought Score' by multiplying the area percentages by the weights
+  drought_data_geospatial <- drought_data_geospatial %>%
+    mutate(Drought_Score = (None * drought_weights[["None"]]) +
+             (D0 * drought_weights[["D0"]]) +
+             (D1 * drought_weights[["D1"]]) +
+             (D2 * drought_weights[["D2"]]) +
+             (D3 * drought_weights[["D3"]]) +
+             (D4 * drought_weights[["D4"]]))
+  
+  # Normalize 'Drought Score' 
+  # Assuming that the maximum possible score is 5 (for D4 at 100% coverage)
+  drought_data_geospatial <- drought_data_geospatial %>%
+    mutate(Normalized_Score = Drought_Score / max(Drought_Score))
+  
+  #Make sure your date column is type date
+  drought_data_geospatial$Date <- as.Date(drought_data_geospatial$Date)
+```
 
 ##### CHLOROPLETH MAP
 
-{r Chloropleth map}
+```{r Chloropleth map}
 
-#Pick a date of intreset for our report, passing as an input to shiny dates_of_interest \<- as.Date(c("2005-04-26 UTC"))
 
-#Filter with date drought_data_filtered \<- drought_data_geospatial %\>% filter(Date %in% dates_of_interest)
+#Pick a date of intreset for our report, passing as an input to shiny
+dates_of_interest <- as.Date(c("2005-04-26 UTC"))
 
-```         
-  # Plot the map with ggplot2 and sf
-ggplot(data = drought_data_filtered) +
-  geom_sf(data = drought_data_filtered$geometry,
-          aes(fill = drought_data_filtered$Normalized_Score), color = "black", size = 0.2) +
-  scale_fill_gradientn(
-    colors = drought_colors,
-    name = "Drought Level",
-    breaks = c(0, 1, 2, 3, 4, 5), 
-    labels = c("None", "D0", "D1", "D2", "D3", "D4"), # Specifying the labels for the breaks
-    limits = c(0, 5), 
-    oob = scales::oob_squish
-  ) +
-  labs(title = paste("Drought Levels in Arizona on 2005-04-26")) +
-  theme_minimal() +
-  theme(
-    legend.position = "right",
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.ticks = element_blank()
-  )
+#Filter with date
+drought_data_filtered <- drought_data_geospatial %>%
+  filter(Date %in% dates_of_interest)
+    
+    
+      # Plot the map with ggplot2 and sf
+    ggplot(data = drought_data_filtered) +
+      geom_sf(data = drought_data_filtered$geometry,
+              aes(fill = drought_data_filtered$Normalized_Score), color = "black", size = 0.2) +
+      scale_fill_gradientn(
+        colors = drought_colors,
+        name = "Drought Level",
+        breaks = c(0, 1, 2, 3, 4, 5), 
+        labels = c("None", "D0", "D1", "D2", "D3", "D4"), # Specifying the labels for the breaks
+        limits = c(0, 5), 
+        oob = scales::oob_squish
+      ) +
+      labs(title = paste("Drought Levels in Arizona on 2005-04-26")) +
+      theme_minimal() +
+      theme(
+        legend.position = "right",
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank()
+      )
 ```
 
 \
@@ -216,7 +305,11 @@ ggplot(data = drought_data_filtered) +
 
 1.  Short Term Drought Conditions:
 
-2.  Long Term Drought Conditions
+    ![](images/ShortTerm.jpg)
+
+2.  Long Term Drought Conditions:
+
+    ![](images/LongTerm.jpg)
 
 ## Conclusion
 

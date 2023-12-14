@@ -12,7 +12,20 @@ editor: visual
 
 if (!require(pacman)) install.packages(pacman)
 
-pacman::p_load(jqr, tidyverse, formattable, dlookr, readxl, writexl,geojsonio,shiny,ggplot2,thematic,ragg,readr,stringr,shinydashboard,leaflet,plotly,readxl,tidyr,sf,dplyr)
+pacman::p_load(tidyverse, formattable, dlookr, readxl, writexl)
+
+library(shiny)
+library(ggplot2)
+library(thematic)
+library(ragg)
+library(readr)
+library(stringr)
+library(shinydashboard)
+library(readxl)
+library(tidyr)
+library(sf)
+library(dplyr)
+library(geojsonio)
 
 drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Total Area by County")
 percent_drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Percent Area by County")
@@ -127,9 +140,7 @@ county_data <- drought_df %>%
             legend.title = element_text(size = 10)) +
       guides(fill = guide_legend(title.position = "top", title.hjust = 0.5))
     
-    
-# Convert ggplot to plotly for animation
-p <- ggplotly(p, tooltip = "all", dynamicTicks = TRUE)
+
     
 ```
 
@@ -163,24 +174,6 @@ When a user interacts with the Leaflet map and selects a county, the donut plot 
       mutate(Percentage = Area / total_area * 100)
     
     
-```
-
-##### LEAFLET PLOT
-
-```{r Leaflet }
-
-    leaflet() %>%
-      setView(lng = -111.6646, lat = 34.0489, zoom = 6) %>%
-      addTiles() %>%
-      addPolygons(data = arizona_counties,
-                  group = "counties",
-                  options = pathOptions(weight = 0.5, color = "white", fillOpacity = 1, fillColor = "orange"),
-                  label = ~name
-      ) %>%
-      addLabelOnlyMarkers(data = arizona_counties,
-                          lng = ~st_coordinates(st_centroid(geometry))[1],
-                          lat = ~st_coordinates(st_centroid(geometry))[2],
-                          label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))
 ```
 
 ##### DONUT PLOT

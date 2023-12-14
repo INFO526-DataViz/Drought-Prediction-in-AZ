@@ -25,7 +25,7 @@ library(readxl)
 library(tidyr)
 library(sf)
 library(dplyr)
-library()
+
 
 drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Total Area by County")
 percent_drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Percent Area by County")
@@ -114,6 +114,8 @@ ggplot(yearly_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
 
 ##### TIMESERIES PLOT
 
+#We are passing input as county and time series for that county will reflect on the dashboard. The code below is just the outline of what we did.
+
 ```{r timeseries plot, message=FALSE, warning=FALSE}
 
 # Filter county data
@@ -128,7 +130,7 @@ county_data <- drought_df %>%
     
 
 #Plot
-    p <- ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
+    ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) +
       geom_area(alpha = 0.7, stat = "identity") +
       scale_fill_manual(values = drought_colors) +
       scale_y_continuous(labels = function(x) paste0(x, "%")) +

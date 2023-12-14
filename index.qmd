@@ -12,7 +12,7 @@ editor: visual
 
 if (!require(pacman)) install.packages(pacman)
 
-pacman::p_load(tidyverse, formattable, dlookr, readxl, writexl)
+pacman::p_load(geojsonio,jqr, tidyverse, formattable, dlookr, readxl, writexl)
 
 library(shiny)
 library(ggplot2)
@@ -25,7 +25,7 @@ library(readxl)
 library(tidyr)
 library(sf)
 library(dplyr)
-library(geojsonio)
+library()
 
 drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Total Area by County")
 percent_drought_df <- read_excel("Shiny App/data/drought_data.xlsx", sheet = "Percent Area by County")

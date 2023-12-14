@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -61,8 +95,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -132,21 +164,14 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#motive" id="toc-motive" class="nav-link" data-scroll-target="#motive">Motive</a></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
-  <li><a href="#question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona" id="toc-question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona" class="nav-link" data-scroll-target="#question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona"><em>Question 1: How has the severity of drought changed over time in Arizona?</em></a></li>
-  </ul></li>
-  <li><a href="#preprocess-the-data-to-obtain-year" id="toc-preprocess-the-data-to-obtain-year" class="nav-link" data-scroll-target="#preprocess-the-data-to-obtain-year">Preprocess the data to obtain Year</a></li>
-  <li><a href="#calculate-the-yearly-average-for-each-drought-level-including-none" id="toc-calculate-the-yearly-average-for-each-drought-level-including-none" class="nav-link" data-scroll-target="#calculate-the-yearly-average-for-each-drought-level-including-none">Calculate the yearly average for each drought level including ‘None’</a></li>
-  <li><a href="#normalize-the-values-to-percentages" id="toc-normalize-the-values-to-percentages" class="nav-link" data-scroll-target="#normalize-the-values-to-percentages">Normalize the values to percentages</a></li>
-  <li><a href="#filter-county-data" id="toc-filter-county-data" class="nav-link" data-scroll-target="#filter-county-data">Filter county data</a></li>
-  <li><a href="#convert-ggplot-to-plotly-for-animation" id="toc-convert-ggplot-to-plotly-for-animation" class="nav-link" data-scroll-target="#convert-ggplot-to-plotly-for-animation">Convert ggplot to plotly for animation</a>
-  <ul class="collapse">
-  <li><a href="#question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity" id="toc-question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity" class="nav-link" data-scroll-target="#question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity"><em>Question 2: What are the most affected areas in Arizona in terms of drought severity?</em></a></li>
+  <li><a href="#question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona" id="toc-question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona" class="nav-link" data-scroll-target="#question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona"><strong>Question 1: How has the severity of drought changed over time in Arizona?</strong></a></li>
+  <li><a href="#question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity" id="toc-question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity" class="nav-link" data-scroll-target="#question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity"><strong>Question 2: What are the most affected areas in Arizona in terms of drought severity?</strong></a></li>
   <li><a href="#analysis-1" id="toc-analysis-1" class="nav-link" data-scroll-target="#analysis-1">Analysis</a></li>
-  <li><a href="#question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year" id="toc-question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year" class="nav-link" data-scroll-target="#question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year">Question 3: <em>Is there a correlation between drought severity and certain times of the year?</em></a></li>
+  <li><a href="#question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year" id="toc-question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year" class="nav-link" data-scroll-target="#question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year">Question 3: <strong>Is there a correlation between drought severity and certain times of the year?</strong></a></li>
   <li><a href="#approach-1" id="toc-approach-1" class="nav-link" data-scroll-target="#approach-1">Approach:</a></li>
+  </ul></li>
   <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -179,11 +204,39 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="load-data-and-libraries" class="level5">
 <h5 class="anchored" data-anchor-id="load-data-and-libraries">Load Data and Libraries</h5>
-<p>{r load packages and data, message=FALSE, warning=FALSE}</p>
-<p>if (!require(pacman)) install.packages(pacman)</p>
-<p>pacman::p_load(tidyverse, formattable, dlookr, readxl, writexl)</p>
-<p>library(shiny) library(ggplot2) library(thematic) library(ragg) library(readr) library(stringr) library(shinydashboard) library(leaflet) library(plotly) library(readxl) library(tidyr) library(sf) library(dplyr) library(geojsonio)</p>
-<p>drought_df &lt;- read_excel(“Shiny App/data/drought_data.xlsx”, sheet = “Total Area by County”) percent_drought_df &lt;- read_excel(“Shiny App/data/drought_data.xlsx”, sheet = “Percent Area by County”) # Load GeoJSON data for Arizona counties arizona_counties &lt;- st_read(“Shiny App/data/arizona-with-county-boundaries_1085.geojson”)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(pacman)) <span class="fu">install.packages</span>(pacman)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(geojsonio,jqr, tidyverse, formattable, dlookr, readxl, writexl)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(thematic)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ragg)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>drought_df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"Shiny App/data/drought_data.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Total Area by County"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>percent_drought_df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"Shiny App/data/drought_data.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Percent Area by County"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Load GeoJSON data for Arizona counties</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>arizona_counties <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Shiny App/data/arizona-with-county-boundaries_1085.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `arizona-with-county-boundaries_1085' from data source 
+  `C:\Users\sweth\OneDrive\Desktop\project-final-Graph-Gurus\Shiny App\data\arizona-with-county-boundaries_1085.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 15 features and 5 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: -114.815 ymin: 31.329 xmax: -109.045 ymax: 37.005
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
 </section>
 <section id="abstract" class="level2">
 <h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
@@ -206,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
 <section id="question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona" class="level3">
-<h3 class="anchored" data-anchor-id="question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona"><em>Question 1: How has the severity of drought changed over time in Arizona?</em></h3>
+<h3 class="anchored" data-anchor-id="question-1-how-has-the-severity-of-drought-changed-over-time-in-arizona"><strong>Question 1: How has the severity of drought changed over time in Arizona?</strong></h3>
 <p>The variability of drought over time is a critical aspect of climate patterns, especially for arid regions like Arizona. This variability can have profound effects on water allocation, agricultural planning, and natural ecosystems. While historical trends have been studied, the nuanced changes within these trends, and the frequency and intensity of extreme drought conditions, remain areas requiring deeper exploration. In recent years, technological advances and data collection efforts have provided an unprecedented amount of climatic data, offering new opportunities to analyze drought patterns with greater precision. This wealth of data paves the way for more detailed temporal analysis, allowing for a better understanding of the cyclical nature and potential shifts in drought severity.</p>
 <section id="approach" class="level4">
 <h4 class="anchored" data-anchor-id="approach">Approach:</h4>
@@ -214,44 +267,85 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="analysis-for-q1" class="level4">
 <h4 class="anchored" data-anchor-id="analysis-for-q1">Analysis for Q1</h4>
-<p>{r data preprocessing, warning=FALSE, message=FALSE}</p>
-</section>
-</section>
-</section>
-<section id="preprocess-the-data-to-obtain-year" class="level1">
-<h1>Preprocess the data to obtain Year</h1>
-<p>drought_df &lt;- drought_df %&gt;% mutate(Year = format(as.Date(Date), “%Y”))</p>
-</section>
-<section id="calculate-the-yearly-average-for-each-drought-level-including-none" class="level1">
-<h1>Calculate the yearly average for each drought level including ‘None’</h1>
-<p>yearly_data &lt;- drought_df %&gt;% group_by(Year, County) %&gt;% summarise(across(c(None:D4), mean, na.rm = TRUE)) %&gt;% pivot_longer(cols = c(None:D4), names_to = “Drought_Level”, values_to = “Value”)</p>
-</section>
-<section id="normalize-the-values-to-percentages" class="level1">
-<h1>Normalize the values to percentages</h1>
-<p>yearly_data &lt;- yearly_data %&gt;% group_by(Year, County) %&gt;% mutate(Percentage = Value / sum(Value) * 100) %&gt;% ungroup()</p>
-<p>{r define color palette, warning=FALSE, message=FALSE}</p>
-<p>drought_colors &lt;- c( “None” = “#FFFFFF”, # Assuming ‘None’ is white “D0” = “#FFFF00”, # Yellow “D1” = “#FFA500”, # Orange “D2” = “#FF0000”, # Red “D3” = “#8B0000”, # Dark Red “D4” = “#654321” # Brown )</p>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess the data to obtain Year</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>drought_df <span class="ot">&lt;-</span> drought_df <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">format</span>(<span class="fu">as.Date</span>(Date), <span class="st">"%Y"</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the yearly average for each drought level including 'None'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>yearly_data <span class="ot">&lt;-</span> drought_df <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year, County) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(None<span class="sc">:</span>D4), mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(None<span class="sc">:</span>D4), <span class="at">names_to =</span> <span class="st">"Drought_Level"</span>, <span class="at">values_to =</span> <span class="st">"Value"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the values to percentages</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>yearly_data <span class="ot">&lt;-</span> yearly_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year, County) <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage =</span> Value <span class="sc">/</span> <span class="fu">sum</span>(Value) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>drought_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"None"</span> <span class="ot">=</span> <span class="st">"#FFFFFF"</span>, <span class="co"># Assuming 'None' is white</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"D0"</span> <span class="ot">=</span> <span class="st">"#FFFF00"</span>, <span class="co"># Yellow</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"D1"</span> <span class="ot">=</span> <span class="st">"#FFA500"</span>, <span class="co"># Orange</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"D2"</span> <span class="ot">=</span> <span class="st">"#FF0000"</span>, <span class="co"># Red</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"D3"</span> <span class="ot">=</span> <span class="st">"#8B0000"</span>, <span class="co"># Dark Red</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"D4"</span> <span class="ot">=</span> <span class="st">"#654321"</span>  <span class="co"># Brown</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="barplot" class="level5">
 <h5 class="anchored" data-anchor-id="barplot">BARPLOT</h5>
-<p>{r stacked bar plot, message=FALSE, warning=FALSE}</p>
-<p>#Plot ggplot(yearly_data, aes(x = Year, y = Percentage, fill = Drought_Level)) + geom_bar(stat = “identity”, position = “fill”) + scale_fill_manual(values = drought_colors) + scale_y_continuous(labels = scales::percent_format()) + labs(title = “Average Yearly Drought Levels”, x = “Year”, y = “Percentage”, fill = “Drought Level”) + theme_minimal() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))</p>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(yearly_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Percentage, <span class="at">fill =</span> Drought_Level)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> drought_colors) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Yearly Drought Levels"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Percentage"</span>, <span class="at">fill =</span> <span class="st">"Drought Level"</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/stacked bar plot-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="timeseries-plot" class="level5">
 <h5 class="anchored" data-anchor-id="timeseries-plot">TIMESERIES PLOT</h5>
-<p>{r timeseries plot, message=FALSE, warning=FALSE}</p>
+<p>#We are passing input as county and time series for that county will reflect on the dashboard. The code below is just the outline of what we did.</p>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter county data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>county_data <span class="ot">&lt;-</span> drought_df <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(Year, County) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(None<span class="sc">:</span>D4), mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(None<span class="sc">:</span>D4), <span class="at">names_to =</span> <span class="st">"Drought_Level"</span>, <span class="at">values_to =</span> <span class="st">"Value"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Percentage =</span> Value <span class="sc">/</span> <span class="fu">sum</span>(Value) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ungroup</span>()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    county_data<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste0</span>(county_data<span class="sc">$</span>Year, <span class="st">"-01-01"</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(county_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Percentage, <span class="at">fill =</span> Drought_Level)) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_area</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> drought_colors) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Percentage"</span>, <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Drought Level over the years"</span>)) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">title.position =</span> <span class="st">"top"</span>, <span class="at">title.hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/timeseries plot-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 </section>
-<section id="filter-county-data" class="level1">
-<h1>Filter county data</h1>
-<p>county_data &lt;- drought_df %&gt;% group_by(Year, County) %&gt;% summarise(across(c(None:D4), mean, na.rm = TRUE)) %&gt;% pivot_longer(cols = c(None:D4), names_to = “Drought_Level”, values_to = “Value”) %&gt;% mutate(Percentage = Value / sum(Value) * 100) %&gt;% ungroup()</p>
-<pre><code>county_data$Year &lt;- as.Date(paste0(county_data$Year, "-01-01"))</code></pre>
-<p>#Plot p &lt;- ggplot(county_data, aes(x = Year, y = Percentage, fill = Drought_Level)) + geom_area(alpha = 0.7, stat = “identity”) + scale_fill_manual(values = drought_colors) + scale_y_continuous(labels = function(x) paste0(x, “%”)) + labs(x = “Year”, y = “Percentage”, title = paste(“Drought Level over the years”)) + theme_minimal() + theme(legend.position = “right”, plot.title = element_text(hjust = 0.6, size = 12), legend.text = element_text(size = 8), legend.title = element_text(size = 10)) + guides(fill = guide_legend(title.position = “top”, title.hjust = 0.5))</p>
 </section>
-<section id="convert-ggplot-to-plotly-for-animation" class="level1">
-<h1>Convert ggplot to plotly for animation</h1>
-<p>p &lt;- ggplotly(p, tooltip = “all”, dynamicTicks = TRUE)</p>
 <section id="question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity" class="level3">
-<h3 class="anchored" data-anchor-id="question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity"><em>Question 2: What are the most affected areas in Arizona in terms of drought severity?</em></h3>
+<h3 class="anchored" data-anchor-id="question-2-what-are-the-most-affected-areas-in-arizona-in-terms-of-drought-severity"><strong>Question 2: What are the most affected areas in Arizona in terms of drought severity?</strong></h3>
 <p>While our initial analysis highlighted the temporal dynamics of drought in Arizona, we realized that understanding the spatial distribution of drought severity across different counties was equally crucial. This line of inquiry is particularly important because drought impacts vary significantly across regions due to diverse geographical and climatic conditions. For example, some counties might consistently experience higher levels of severe drought categories (such as D3 or D4), indicating a greater vulnerability to drought effects.</p>
 </section>
 <section id="analysis-1" class="level3">
@@ -260,46 +354,43 @@ ul.task-list li input[type="checkbox"] {
 <p>When a user interacts with the Leaflet map and selects a county, the donut plot dynamically updates to display the percentage breakdown of drought levels for that particular area. This interactive feature is crucial for understanding the specific drought conditions in different parts of Arizona, allowing us to identify which counties are most severely affected.</p>
 <section id="analysis-for-q2" class="level4">
 <h4 class="anchored" data-anchor-id="analysis-for-q2">Analysis for Q2</h4>
-<p>{r donut plot : preprocessing} #Calculate percentages</p>
-<pre><code>drought_totals &lt;- drought_df %&gt;% 
-  summarise(D0 = sum(D0, na.rm = TRUE),
-            D1 = sum(D1, na.rm = TRUE),
-            D2 = sum(D2, na.rm = TRUE),
-            D3 = sum(D3, na.rm = TRUE),
-            D4 = sum(D4, na.rm = TRUE),
-            None = sum(None, na.rm = TRUE)) %&gt;%
-  pivot_longer(cols = everything(), names_to = "Drought_Level", values_to = "Area")
-
-# Calculate percentages
-total_area &lt;- sum(drought_totals$Area)
-drought_totals &lt;- drought_totals %&gt;%
-  mutate(Percentage = Area / total_area * 100)</code></pre>
-<section id="leaflet-plot" class="level5">
-<h5 class="anchored" data-anchor-id="leaflet-plot">LEAFLET PLOT</h5>
-<p>{r Leaflet }</p>
-<pre><code>leaflet() %&gt;%
-  setView(lng = -111.6646, lat = 34.0489, zoom = 6) %&gt;%
-  addTiles() %&gt;%
-  addPolygons(data = arizona_counties,
-              group = "counties",
-              options = pathOptions(weight = 0.5, color = "white", fillOpacity = 1, fillColor = "orange"),
-              label = ~name
-  ) %&gt;%
-  addLabelOnlyMarkers(data = arizona_counties,
-                      lng = ~st_coordinates(st_centroid(geometry))[1],
-                      lat = ~st_coordinates(st_centroid(geometry))[2],
-                      label = ~name, labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE))</code></pre>
-</section>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate percentages</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    drought_totals <span class="ot">&lt;-</span> drought_df <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">D0 =</span> <span class="fu">sum</span>(D0, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">D1 =</span> <span class="fu">sum</span>(D1, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">D2 =</span> <span class="fu">sum</span>(D2, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">D3 =</span> <span class="fu">sum</span>(D3, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">D4 =</span> <span class="fu">sum</span>(D4, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">None =</span> <span class="fu">sum</span>(None, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Drought_Level"</span>, <span class="at">values_to =</span> <span class="st">"Area"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate percentages</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    total_area <span class="ot">&lt;-</span> <span class="fu">sum</span>(drought_totals<span class="sc">$</span>Area)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    drought_totals <span class="ot">&lt;-</span> drought_totals <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Percentage =</span> Area <span class="sc">/</span> total_area <span class="sc">*</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="donut-plot" class="level5">
 <h5 class="anchored" data-anchor-id="donut-plot">DONUT PLOT</h5>
-<p>{r donut plot}</p>
-<p>ggplot(drought_totals, aes(x = 2, y = Percentage, fill = Drought_Level)) + geom_bar(stat = “identity”, width = 1) + coord_polar(theta = “y”) + theme_void() + scale_fill_manual(values = drought_colors) + geom_text(aes(label = sprintf(“%0.2f%%”, Percentage)), position = position_stack(vjust = 0.5)) + xlim(c(0.15, 2.5))</p>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(drought_totals, <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">2</span>, <span class="at">y =</span> Percentage, <span class="at">fill =</span> Drought_Level)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> drought_colors) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%0.2f%%"</span>, Percentage)), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="fl">0.15</span>, <span class="fl">2.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/donut plot-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <p>This spatial analysis is not only critical for current drought management strategies but also sets the foundation for our next line of inquiry. Understanding the distribution of drought severity levels in different counties leads us naturally to Question 3, where we explore whether there’s a correlation between drought severity and specific times of the year.</p>
 </section>
 </section>
 </section>
 <section id="question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year" class="level3">
-<h3 class="anchored" data-anchor-id="question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year">Question 3: <em>Is there a correlation between drought severity and certain times of the year?</em></h3>
+<h3 class="anchored" data-anchor-id="question-3-is-there-a-correlation-between-drought-severity-and-certain-times-of-the-year">Question 3: <strong>Is there a correlation between drought severity and certain times of the year?</strong></h3>
 <p>Building on our understanding of drought severity distribution across Arizona’s counties, we aim to further examine if these drought conditions correlate with particular times of the year. This investigation is crucial for identifying seasonal patterns in drought severity, which can inform more effective drought management and preparedness strategies.</p>
 </section>
 <section id="approach-1" class="level3">
@@ -307,52 +398,92 @@ drought_totals &lt;- drought_totals %&gt;%
 <p>In addressing Question 3, our focus shifted to understanding if drought severity in Arizona correlates with specific times of the year, a crucial aspect for planning and mitigating drought impacts effectively. To analyse, we utilized a choropleth map, a powerful tool for visualizing geographical data, which shows drought severity levels across different counties on selected dates. We began with preprocessing of the geospatial drought data and then we streamlined the dataset by renaming and selecting essential columns, ensuring data types were consistent for accurate mapping. We then merged this data with detailed geographic information of Arizona counties, assigning weights to each drought level to compute a ‘Drought Score.’ This score was normalized to provide a consistent scale for comparison across counties. By incorporating user-selected dates, our choropleth map dynamically reflects the drought severity for any given day, visually represented through color gradients corresponding to different drought levels. This interactive and detailed visualization allows us to investigate if certain times of the year are consistently more prone to severe drought conditions, thereby addressing the question of seasonal correlation with drought severity in Arizona.</p>
 <section id="analysis-for-q3" class="level4">
 <h4 class="anchored" data-anchor-id="analysis-for-q3">Analysis for Q3</h4>
-<p>{r Data preprocessing for Chloropleth map}</p>
-<p>#Rename Column from name to County arizona_counties_new &lt;- dplyr::rename(arizona_counties, County = name)</p>
-<p>#Drop all columns ecept County and geometry arizona_counties_new &lt;- arizona_counties_new %&gt;% select(County, geometry)</p>
-<p>#Convert to req data types percent_drought_df<span class="math inline">\(County &lt;- as.character(percent_drought_df\)</span>County) arizona_counties_new<span class="math inline">\(County &lt;- as.character(arizona_counties_new\)</span>County) percent_drought_df<span class="math inline">\(Date&lt;- as.Date(percent_drought_df\)</span>Date)</p>
-<p>drought_data_geospatial &lt;- percent_drought_df %&gt;% left_join(arizona_counties_new, by = “County”)</p>
-<p># Assign weights to the drought levels drought_weights &lt;- c(None = 0, D0 = 1, D1 = 2, D2 = 3, D3 = 4, D4 = 5)</p>
-<p># Calculate ‘Drought Score’ by multiplying the area percentages by the weights drought_data_geospatial &lt;- drought_data_geospatial %&gt;% mutate(Drought_Score = (None * drought_weights[[“None”]]) + (D0 * drought_weights[[“D0”]]) + (D1 * drought_weights[[“D1”]]) + (D2 * drought_weights[[“D2”]]) + (D3 * drought_weights[[“D3”]]) + (D4 * drought_weights[[“D4”]]))</p>
-<p># Normalize ‘Drought Score’ # Assuming that the maximum possible score is 5 (for D4 at 100% coverage) drought_data_geospatial &lt;- drought_data_geospatial %&gt;% mutate(Normalized_Score = Drought_Score / max(Drought_Score))</p>
-<p>#Make sure your date column is type date drought_data_geospatial<span class="math inline">\(Date &lt;- as.Date(drought_data_geospatial\)</span>Date)</p>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Rename Column from name to County</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  arizona_counties_new <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(arizona_counties, <span class="at">County =</span> name)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Drop all columns ecept County and geometry</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  arizona_counties_new <span class="ot">&lt;-</span> arizona_counties_new <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(County, geometry)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Convert to req data types</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  percent_drought_df<span class="sc">$</span>County <span class="ot">&lt;-</span> <span class="fu">as.character</span>(percent_drought_df<span class="sc">$</span>County)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  arizona_counties_new<span class="sc">$</span>County <span class="ot">&lt;-</span> <span class="fu">as.character</span>(arizona_counties_new<span class="sc">$</span>County)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  percent_drought_df<span class="sc">$</span>Date<span class="ot">&lt;-</span> <span class="fu">as.Date</span>(percent_drought_df<span class="sc">$</span>Date)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  drought_data_geospatial <span class="ot">&lt;-</span> percent_drought_df <span class="sc">%&gt;%</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(arizona_counties_new, <span class="at">by =</span> <span class="st">"County"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assign weights to the drought levels</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  drought_weights <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">None =</span> <span class="dv">0</span>, <span class="at">D0 =</span> <span class="dv">1</span>, <span class="at">D1 =</span> <span class="dv">2</span>, <span class="at">D2 =</span> <span class="dv">3</span>, <span class="at">D3 =</span> <span class="dv">4</span>, <span class="at">D4 =</span> <span class="dv">5</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate 'Drought Score' by multiplying the area percentages by the weights</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  drought_data_geospatial <span class="ot">&lt;-</span> drought_data_geospatial <span class="sc">%&gt;%</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Drought_Score =</span> (None <span class="sc">*</span> drought_weights[[<span class="st">"None"</span>]]) <span class="sc">+</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>             (D0 <span class="sc">*</span> drought_weights[[<span class="st">"D0"</span>]]) <span class="sc">+</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>             (D1 <span class="sc">*</span> drought_weights[[<span class="st">"D1"</span>]]) <span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>             (D2 <span class="sc">*</span> drought_weights[[<span class="st">"D2"</span>]]) <span class="sc">+</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>             (D3 <span class="sc">*</span> drought_weights[[<span class="st">"D3"</span>]]) <span class="sc">+</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>             (D4 <span class="sc">*</span> drought_weights[[<span class="st">"D4"</span>]]))</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Normalize 'Drought Score' </span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assuming that the maximum possible score is 5 (for D4 at 100% coverage)</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  drought_data_geospatial <span class="ot">&lt;-</span> drought_data_geospatial <span class="sc">%&gt;%</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Normalized_Score =</span> Drought_Score <span class="sc">/</span> <span class="fu">max</span>(Drought_Score))</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Make sure your date column is type date</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  drought_data_geospatial<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(drought_data_geospatial<span class="sc">$</span>Date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="chloropleth-map" class="level5">
 <h5 class="anchored" data-anchor-id="chloropleth-map">CHLOROPLETH MAP</h5>
-<p>{r Chloropleth map}</p>
-<p>#Pick a date of intreset for our report, passing as an input to shiny dates_of_interest &lt;- as.Date(c(“2005-04-26 UTC”))</p>
-<p>#Filter with date drought_data_filtered &lt;- drought_data_geospatial %&gt;% filter(Date %in% dates_of_interest)</p>
-<pre><code>  # Plot the map with ggplot2 and sf
-ggplot(data = drought_data_filtered) +
-  geom_sf(data = drought_data_filtered$geometry,
-          aes(fill = drought_data_filtered$Normalized_Score), color = "black", size = 0.2) +
-  scale_fill_gradientn(
-    colors = drought_colors,
-    name = "Drought Level",
-    breaks = c(0, 1, 2, 3, 4, 5), 
-    labels = c("None", "D0", "D1", "D2", "D3", "D4"), # Specifying the labels for the breaks
-    limits = c(0, 5), 
-    oob = scales::oob_squish
-  ) +
-  labs(title = paste("Drought Levels in Arizona on 2005-04-26")) +
-  theme_minimal() +
-  theme(
-    legend.position = "right",
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.ticks = element_blank()
-  )</code></pre>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Pick a date of intreset for our report, passing as an input to shiny</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dates_of_interest <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"2005-04-26 UTC"</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter with date</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>drought_data_filtered <span class="ot">&lt;-</span> drought_data_geospatial <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">%in%</span> dates_of_interest)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Plot the map with ggplot2 and sf</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="at">data =</span> drought_data_filtered) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_sf</span>(<span class="at">data =</span> drought_data_filtered<span class="sc">$</span>geometry,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">fill =</span> drought_data_filtered<span class="sc">$</span>Normalized_Score), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_gradientn</span>(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">colors =</span> drought_colors,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">name =</span> <span class="st">"Drought Level"</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>), </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"D0"</span>, <span class="st">"D1"</span>, <span class="st">"D2"</span>, <span class="st">"D3"</span>, <span class="st">"D4"</span>), <span class="co"># Specifying the labels for the breaks</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>), </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">oob =</span> scales<span class="sc">::</span>oob_squish</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Drought Levels in Arizona on 2005-04-26"</span>)) <span class="sc">+</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>      )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/Chloropleth map-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <p><br>
 </p>
+</section>
 </section>
 </section>
 </section>
 <section id="interpretation" class="level2">
 <h2 class="anchored" data-anchor-id="interpretation">Interpretation</h2>
 <ol type="1">
-<li><p>Short Term Drought Conditions:</p></li>
-<li><p>Long Term Drought Conditions</p></li>
+<li><p>Short Term Drought Conditions:</p>
+<p><img src="images/ShortTerm.jpg" class="img-fluid"></p></li>
+<li><p>Long Term Drought Conditions:</p>
+<p><img src="images/LongTerm.jpg" class="img-fluid"></p></li>
 </ol>
 </section>
 <section id="conclusion" class="level2">
@@ -363,7 +494,6 @@ ggplot(data = drought_data_filtered) +
 <p>In short, this project is more than just about drought data; it’s about our shared duty to protect Arizona’s vital water resources. The process of exploring and visualizing the data has highlighted the need for a coordinated approach. It’s a call to action, an invitation to turn knowledge into meaningful actions. We hope this report will act as a guide, leading us towards a future where Arizona is more resilient and mindful of water usage.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
